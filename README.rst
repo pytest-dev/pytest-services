@@ -1,4 +1,4 @@
-Splinter plugin for the py.test runner
+Services plugin for the py.test runner
 ======================================
 
 .. image:: https://api.travis-ci.org/pytest-dev/pytest-services.png
