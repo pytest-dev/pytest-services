@@ -1,5 +1,5 @@
-Services plugin for the py.test runner
-======================================
+Services plugin for pytest testing framework
+============================================
 
 .. image:: https://api.travis-ci.org/pytest-dev/pytest-services.png
     :target: https://travis-ci.org/pytest-dev/pytest-services

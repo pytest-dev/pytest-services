@@ -53,7 +53,7 @@ class Tox(TestCommand):
 
 setup(
     name='pytest-services',
-    description='Splinter plugin for pytest testing framework',
+    description='Services plugin for pytest testing framework',
     long_description=long_description,
     author='Anatoly Bubenkov, Paylogic International and others',
     license='MIT license',
