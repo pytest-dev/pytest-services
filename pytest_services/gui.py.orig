@@ -1,0 +1,138 @@
+"""Fixtures for the GUI environment."""
+import atexit
+import os
+import fcntl
+import time
+import socket
+import shlex
+import subprocess32
+
+from distutils.spawn import find_executable
+import pytest
+
+from tests.fixtures.services.util import (
+    file_lock,
+    get_free_display,
+    memory_lock,
+    unlock_display,
+    memoize,
+)
+
+from testhelpers import pltest
+
+
+@pytest.fixture(scope='session')
+@memoize
+def display(request, pl_local_environment, lock_dir, log):
+    """The DISPLAY environment variable used in this test run.
+
+    In case it is not a local run, a random value will be picked up and set,
+    otherwise it will be taken from the environment.
+
+    """
+    if not pl_local_environment:
+        if request.config.option.display:
+            display = request.config.option.display
+        else:
+            display = get_free_display(lock_dir, log)
+            atexit.register(lambda: unlock_display(display, lock_dir, log))
+
+        os.environ['DISPLAY'] = ':{0}'.format(display) if ':' not in str(display) else display
+
+        return display
+
+
+@pytest.fixture(scope='session')
+@memoize
+def xvfb_min_free_memory():
+    """Minimum amount of memory required for xvfb in megabytes."""
+    return 10
+
+
+@pytest.fixture(scope='session')
+@memoize
+def xvfb_watcher(
+        request, pl_local_environment, test_cleanup, display, lock_dir, memory_locks, xvfb_min_free_memory,
+        timeout=600):
+    """The Xvfb process.
+
+    If the tests are run loccaly xvfb is not started.
+
+    """
+    if (
+        request.config.option.display
+        or pl_local_environment
+        or request.config.option.splinter_webdriver == 'phantomjs'
+    ):
+        # display is passed, no action required
+        return
+    try:
+        with file_lock(
+                os.path.join(lock_dir, 'xvfb_{0}.lock'.format(display)),
+                operation=fcntl.LOCK_EX | fcntl.LOCK_NB):
+            xvfb = find_executable('Xvfb')
+            assert xvfb, 'You have to have Xvfb installed'
+            cmd = (
+                '{xvfb} '
+                ':{display} -screen 0 1366x768x8 -ac +extension RANDR'
+            ).format(display=display, xvfb=xvfb)
+
+            args = shlex.split(cmd)
+
+            with memory_lock(lock_dir, xvfb_min_free_memory, lock=memory_locks):
+
+                watcher = subprocess32.Popen(
+                    args,
+                    stdout=subprocess32.PIPE,
+                    stderr=subprocess32.PIPE,
+                )
+
+            def finalize():
+                watcher.kill()
+                try:
+                    watcher.communicate(timeout=timeout / 2)
+                except subprocess32.TimeoutExpired:
+                    watcher.terminate()
+                    watcher.communicate(timeout=timeout / 2)
+
+            atexit.register(finalize)
+
+            times = 0
+            while True:
+                try:
+                    socket.create_connection(('127.0.0.1', 6000 + display))
+                except socket.error:
+                    if times > timeout:
+                        raise
+                else:
+                    break
+
+                time.sleep(1)
+                times += 1
+
+            return watcher
+    except IOError:
+        # no need in xvfb, it's already there
+        return
+
+
+@pytest.fixture(scope='session', autouse=True)
+@memoize
+def browser_path(request, pl_local_environment, project_path):
+    """Substitute the browser path."""
+    driver = request.config.option.splinter_webdriver
+    paths = {
+        'firefox': [pltest.firefox.version, 'firefox'],
+        'chrome': [pltest.chrome.version],
+        'phantomjs': [pltest.phantomjs.version, 'phantomjs', 'bin']}
+    path = os.path.join('.{0}'.format(driver), *paths[driver])
+    if not os.path.exists(path):
+        path = os.path.join(project_path, path)
+    if not os.path.exists(path):
+        path = request.config.option.browser_path
+    if not os.path.exists(path):
+        raise Exception(
+            'browser path does not exist: {0}. Use "pltest <firefox|phantomjs|chrome>" command to install it.'
+            .format(path)
+        )
+    os.environ['PATH'] = '{0}:'.format(path) + os.environ['PATH']
