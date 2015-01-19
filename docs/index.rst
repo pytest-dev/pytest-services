@@ -1,5 +1,5 @@
-Welcome to pytest-cloud's documentation!
-========================================
+Welcome to pytest-services's documentation!
+===========================================
 
 .. contents::
 

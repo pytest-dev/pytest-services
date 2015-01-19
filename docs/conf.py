@@ -1,7 +1,7 @@
 """Sphinx config."""
 # -*- coding: utf-8 -*-
 #
-# pytest-cloud documentation build configuration file, created by
+# pytest-services documentation build configuration file, created by
 # sphinx-quickstart on Sun Apr  7 21:07:56 2013.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -45,8 +45,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'pytest-cloud'
-AUTHOR = 'Anatoly Bubenkov and others'
+project = u'pytest-services'
+AUTHOR = 'Anatoly Bubenkov, Paylogic International and others'
 copyright = u'2015, ' + AUTHOR
 
 # The version info for the project you're documenting, acts as replacement for
@@ -170,7 +170,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'pytest-cloud-doc'
+htmlhelp_basename = 'pytest-services-doc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -189,7 +189,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'pytest-cloud.tex', u'pytest-cloud Documentation', AUTHOR, 'manual'),
+    ('index', 'pytest-services.tex', u'pytest-services Documentation', AUTHOR, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -218,7 +218,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'pytest-cloud', u'pytest-cloud Documentation',
+    ('index', 'pytest-services', u'pytest-services Documentation',
      [AUTHOR], 1)
 ]
 
@@ -232,8 +232,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'pytest-cloud', u'pytest-cloud Documentation',
-        AUTHOR, 'pytest-cloud', 'Distributed tests planner plugin for pytest testing framework.',
+    ('index', 'pytest-services', u'pytest-services Documentation',
+        AUTHOR, 'pytest-services', 'Services plugin for pytest testing framework.',
         'Miscellaneous'),
 ]
 
