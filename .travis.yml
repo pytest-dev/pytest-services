@@ -1,7 +1,4 @@
 language: python
-before_install:
-  # - apt-get install libmemcached-dev libmysqlclient-dev
-# command to install dependencies
 install:
   - pip install python-coveralls virtualenv
 # # command to run tests

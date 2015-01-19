@@ -1,3 +1,4 @@
+# apt-get install xvfb python-dev libmemcached-dev libmysqlclient-dev
 mock
 mysqlclient
 pylibmc
