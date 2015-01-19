@@ -1,8 +1,6 @@
 language: python
-addons:
-  firefox: "32.0.3"
 before_install:
-  - apt-get install libmemcached-dev libmysqlclient-dev
+  # - apt-get install libmemcached-dev libmysqlclient-dev
 # command to install dependencies
 install:
   - pip install python-coveralls virtualenv
