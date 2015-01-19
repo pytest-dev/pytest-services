@@ -32,7 +32,6 @@ def reload_settings(settings, databases):
 
     Including:
     urlconf module, context processor, templatetags settings, database settings.
-    This also includes re-setting up sqlalchemy database settings. Environment chosen is always TestEnv.
     """
     # resetup django settings
     settings._setup()

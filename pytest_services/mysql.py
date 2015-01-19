@@ -12,7 +12,7 @@ from .process import (
 
 
 @pytest.fixture(scope='session')
-def mysql_system_database(run_services, mysql_data_dir, memory_temp_dir, lock_dir, log):
+def mysql_system_database(run_services, mysql_data_dir, memory_temp_dir, lock_dir, services_log):
     """Install database to given path."""
     if run_services:
         mysql_install_db = find_executable('mysql_install_db')
@@ -33,7 +33,7 @@ def mysql_system_database(run_services, mysql_data_dir, memory_temp_dir, lock_di
     """.format(user=os.environ['USER'], tmpdir=memory_temp_dir))
 
         try:
-            log.debug('Starting mysql_install_db.')
+            services_log.debug('Starting mysql_install_db.')
             check_output([
                 mysql_install_db,
                 '--defaults-file={0}'.format(defaults_path),
@@ -42,17 +42,17 @@ def mysql_system_database(run_services, mysql_data_dir, memory_temp_dir, lock_di
                 '--user={0}'.format(os.environ['USER'])],
             )
         except CalledProcessWithOutputError as e:
-            log.error(
+            services_log.error(
                 '{e.cmd} failed with output:\n{e.output}\nand erorr:\n{e.err}. '
                 'Please ensure you disabled apparmor for /run/shm/** or for whole mysql'.format(e=e))
             raise
         finally:
-            log.debug('mysql_install_db was executed.')
+            services_log.debug('mysql_install_db was executed.')
 
 
 @pytest.fixture(scope='session')
 def mysql_data_dir(
-        request, memory_base_dir, memory_temp_dir, lock_dir, session_id, log, run_services):
+        request, memory_base_dir, memory_temp_dir, lock_dir, session_id, services_log, run_services):
     """The root directory for the mysql instance.
 
     `mysql_install_db` is run in that directory.
@@ -60,7 +60,7 @@ def mysql_data_dir(
     """
     if run_services:
         path = os.path.join(memory_base_dir, 'mysql')
-        log.debug('Making mysql base dir in {path}'.format(path=path))
+        services_log.debug('Making mysql base dir in {path}'.format(path=path))
 
         def finalizer():
             shutil.rmtree(path, ignore_errors=True)
@@ -116,7 +116,7 @@ def mysql_database_getter(run_services, mysql_watcher, mysql_socket):
     """Prepare new test database creation function."""
     if run_services:
         def getter(database_name):
-            check_output(
+            return check_output(
                 [
                     'mysql',
                     '--user=root',

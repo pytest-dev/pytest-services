@@ -12,7 +12,7 @@ from .locks import (
 
 
 @pytest.fixture(scope='session')
-def xvfb_display(request, run_services, lock_dir, log):
+def xvfb_display(request, run_services, lock_dir, services_log):
     """The DISPLAY environment variable used in this test run.
 
     In case it is not a local run, a random value will be picked up and set,
@@ -23,7 +23,7 @@ def xvfb_display(request, run_services, lock_dir, log):
         if request.config.option.display:
             display = request.config.option.display
         else:
-            display = get_display(request, lock_dir, log)
+            display = get_display(request, lock_dir, services_log)
         os.environ['DISPLAY'] = ':{0}'.format(display) if ':' not in str(display) else display
 
         return display

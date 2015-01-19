@@ -13,7 +13,7 @@ def root_dir():
 
 
 @pytest.yield_fixture(scope='session')
-def base_dir(request, test_cleanup, session_id, root_dir, log):
+def base_dir(request, test_cleanup, session_id, root_dir, services_log):
     """The directory where test run artifacts should be stored.
 
     It is responsibility of fixtures and tests that depend on it to clean up
@@ -21,22 +21,22 @@ def base_dir(request, test_cleanup, session_id, root_dir, log):
 
     """
     path = os.path.join(root_dir, 'sr-{0}'.format(session_id))
-    log.debug('creating base dir: {0}'.format(path))
+    services_log.debug('creating base dir: {0}'.format(path))
     if not os.path.exists(path):
         os.mkdir(path)
 
     yield path
 
-    log.debug('finalizing base dir: {0}'.format(path))
+    services_log.debug('finalizing base dir: {0}'.format(path))
     shutil.rmtree(path, ignore_errors=True)
 
 
 @pytest.fixture(scope='session')
-def temp_dir(request, base_dir, log):
+def temp_dir(request, base_dir, services_log):
     """The temporary dir."""
     path = os.path.join(base_dir, 'tmp')
 
-    log.debug('creating temp dir: {0}'.format(path))
+    services_log.debug('creating temp dir: {0}'.format(path))
     if not os.path.exists(path):
         os.mkdir(path)
 
@@ -54,7 +54,7 @@ def memory_root_dir(root_dir):
 
 
 @pytest.yield_fixture(scope='session')
-def memory_base_dir(request, test_cleanup, session_id, memory_root_dir, log):
+def memory_base_dir(request, test_cleanup, session_id, memory_root_dir, services_log):
     """The directory where memory test run artifacts should be stored.
 
     It is responsibility of fixtures and tests that depend on it to clean up
@@ -63,22 +63,22 @@ def memory_base_dir(request, test_cleanup, session_id, memory_root_dir, log):
     """
     path = os.path.join(memory_root_dir, 'sr-{0}'.format(session_id))
 
-    log.debug('creating memory base dir: {0}'.format(path))
+    services_log.debug('creating memory base dir: {0}'.format(path))
     if not os.path.exists(path):
         os.mkdir(path)
 
     yield path
 
-    log.debug('finalizing memory base dir: {0}'.format(path))
+    services_log.debug('finalizing memory base dir: {0}'.format(path))
     shutil.rmtree(path, ignore_errors=True)
 
 
 @pytest.fixture(scope='session')
-def memory_temp_dir(request, memory_base_dir, log):
+def memory_temp_dir(request, memory_base_dir, services_log):
     """The memory temporary dir."""
     path = os.path.join(memory_base_dir, 'tmp')
 
-    log.debug('creating memory temp dir: {0}'.format(path))
+    services_log.debug('creating memory temp dir: {0}'.format(path))
     if not os.path.exists(path):
         os.mkdir(path)
 
@@ -86,10 +86,10 @@ def memory_temp_dir(request, memory_base_dir, log):
 
 
 @pytest.fixture(scope='session')
-def lock_dir(memory_root_dir, log):
+def lock_dir(memory_root_dir, services_log):
     """The lock dir."""
     path = os.path.join(memory_root_dir, 'pltest-lock')
-    log.debug('ensuring lock dir: {0}'.format(path))
+    services_log.debug('ensuring lock dir: {0}'.format(path))
     if not os.path.exists(path):
         try:
             os.mkdir(path, 0o777)
@@ -106,10 +106,10 @@ def lock_dir(memory_root_dir, log):
 
 
 @pytest.fixture(scope='session')
-def run_dir(memory_temp_dir, log):
+def run_dir(memory_temp_dir, services_log):
     """The run dir (like local /var/run)."""
     path = os.path.join(memory_temp_dir, 'run')
-    log.debug('creating run dir: {0}'.format(path))
+    services_log.debug('creating run dir: {0}'.format(path))
     os.mkdir(path)
 
     return path

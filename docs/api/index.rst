@@ -27,3 +27,6 @@ Internal API
 
 .. automodule:: pytest_services.log
    :members:
+
+.. automodule:: pytest_services.django_settings
+   :members:

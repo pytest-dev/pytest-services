@@ -55,7 +55,7 @@ def file_lock(filename, operation=fcntl.LOCK_EX, remove=True, timeout=20):
     :pram operation: the lock operation.
 
     """
-    # http://blog.vmfarms.com/2011/03/cross-process-locking-and.html
+    # http://bservices_log.vmfarms.com/2011/03/cross-process-locking-and.html
     times = 0
     while True:
         try:
@@ -73,7 +73,7 @@ def file_lock(filename, operation=fcntl.LOCK_EX, remove=True, timeout=20):
         unlock_file(filename, handle, remove=remove)
 
 
-def unlock_resource(name, resource, lock_dir, log):
+def unlock_resource(name, resource, lock_dir, services_log):
     """Unlock previously locked resource.
 
     :param name: name to be used to separate various resources, eg. port, display
@@ -85,8 +85,8 @@ def unlock_resource(name, resource, lock_dir, log):
             bound_resources.remove(resource)
         except ValueError:
             pass
-        log.debug('resource freed {0}: {1}'.format(name, resource))
-        log.debug('bound resources {0}: {1}'.format(name, bound_resources))
+        services_log.debug('resource freed {0}: {1}'.format(name, resource))
+        services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
 
 
 @contextlib.contextmanager
@@ -112,33 +112,33 @@ def locked_resources(name, lock_dir):
         fd.write(json.dumps(bound_resources))
 
 
-def unlock_port(port, lock_dir, log):
+def unlock_port(port, lock_dir, services_log):
     """Unlock previously locked port."""
-    return unlock_resource('port', port, lock_dir, log)
+    return unlock_resource('port', port, lock_dir, services_log)
 
 
-def unlock_display(display, lock_dir, log):
+def unlock_display(display, lock_dir, services_log):
     """Unlock previously locked display."""
-    return unlock_resource('display', display, lock_dir, log)
+    return unlock_resource('display', display, lock_dir, services_log)
 
 
-def lock_resource(name, resource_getter, lock_dir, log):
+def lock_resource(name, resource_getter, lock_dir, services_log):
     """"""
     with locked_resources(name, lock_dir) as bound_resources:
-        log.debug('bound_resources {0}: {1}'.format(name, bound_resources))
+        services_log.debug('bound_resources {0}: {1}'.format(name, bound_resources))
 
         resource = resource_getter(bound_resources)
         while resource in bound_resources:
             # resource is already taken by someone, retry
-            log.debug('bound resources {0}: {1}'.format(name, bound_resources))
+            services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
             resource = resource_getter(bound_resources)
-        log.debug('free resource choosen {0}: {1}'.format(name, resource))
+        services_log.debug('free resource choosen {0}: {1}'.format(name, resource))
         bound_resources.append(resource)
-        log.debug('bound resources {0}: {1}'.format(name, bound_resources))
+        services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
         return resource
 
 
-def get_free_port(lock_dir, log):
+def get_free_port(lock_dir, services_log):
     """Get free port to listen on."""
     def get_port(bound_resources):
         if bound_resources:
@@ -156,10 +156,10 @@ def get_free_port(lock_dir, log):
                 pass
             port += 1
 
-    return lock_resource('port', get_port, lock_dir, log)
+    return lock_resource('port', get_port, lock_dir, services_log)
 
 
-def get_free_display(lock_dir, log):
+def get_free_display(lock_dir, services_log):
     """Get free display to listen on."""
     def get_display(bound_resources):
         if bound_resources:
@@ -168,21 +168,21 @@ def get_free_display(lock_dir, log):
             display = 100
         return display
 
-    return lock_resource('display', get_display, lock_dir, log)
+    return lock_resource('display', get_display, lock_dir, services_log)
 
 
-def get_port(request, name, lock_dir, log):
+def get_port(request, name, lock_dir, services_log):
     """Lock a free port and unlock it on finalizer."""
-    port = get_free_port(lock_dir, log)
+    port = get_free_port(lock_dir, services_log)
 
     def finalize():
-        unlock_port(port, lock_dir, log)
+        unlock_port(port, lock_dir, services_log)
     request.addfinalizer(finalize)
     return port
 
 
-def get_display(request, lock_dir, log):
+def get_display(request, lock_dir, services_log):
     """Lock a free display and unlock it on finalizer."""
-    display = get_free_display(lock_dir, log)
-    request.addfinalizer(lambda: unlock_display(display, lock_dir, log))
+    display = get_free_display(lock_dir, services_log)
+    request.addfinalizer(lambda: unlock_display(display, lock_dir, services_log))
     return display

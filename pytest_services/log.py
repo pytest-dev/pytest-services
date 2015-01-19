@@ -6,8 +6,8 @@ import pytest
 
 
 @pytest.fixture(scope='session')
-def log(slave_id):
-    """A logger with the slave id."""
+def services_log(slave_id):
+    """A services_logger with the slave id."""
     return logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
 
 
@@ -23,8 +23,7 @@ def dont_capture(request):
 
 
 def remove_handlers():
-    """Remove root logging handlers."""
-    import logging
+    """Remove root services_logging handlers."""
     handlers = []
     for handler in logging.root.handlers:
         if not isinstance(handler, logging.StreamHandler):

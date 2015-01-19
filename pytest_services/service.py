@@ -50,7 +50,7 @@ def session_id(request, slave_id, run_services):
 
 
 @pytest.fixture(scope='session')
-def watcher_getter(request, log):
+def watcher_getter(request, services_log):
     """Popen object of given executable name and it's arguments.
 
     Wait for the process to start.
@@ -62,7 +62,7 @@ def watcher_getter(request, log):
 
         cmd = [name] + arguments or []
 
-        log.debug('Starting {0}: {1}'.format(name, arguments))
+        services_log.debug('Starting {0}: {1}'.format(name, arguments))
 
         watcher = subprocess.Popen(
             cmd,
