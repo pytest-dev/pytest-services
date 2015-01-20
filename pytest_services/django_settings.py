@@ -15,6 +15,9 @@ def setup_django_settings(test_settings):
 
     from django.conf import settings as django_settings
 
+    # (re)setup django settings
+    django_settings._setup()
+
     # reload settings
     reload_settings(django_settings)
 
@@ -33,9 +36,6 @@ def reload_settings(settings, databases):
     Including:
     urlconf module, context processor, templatetags settings, database settings.
     """
-    # resetup django settings
-    settings._setup()
-
     settings.DATABASES.update(databases)
 
     # check if there's settings to reload
