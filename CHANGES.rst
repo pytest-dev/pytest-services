@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.3
+-----
+
+- fixed popen arguments (bubenkoff)
+
+
 1.0.2
 -----
 

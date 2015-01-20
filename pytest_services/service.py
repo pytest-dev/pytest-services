@@ -64,15 +64,13 @@ def watcher_getter(request, services_log):
 
         services_log.debug('Starting {0}: {1}'.format(name, arguments))
 
-        watcher = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            close_fds=True,
-        )
+        watcher = subprocess.Popen(cmd, close_fds=True)
 
         def finalize():
-            watcher.kill()
+            try:
+                watcher.kill()
+            except OSError:
+                pass
             try:
                 watcher.communicate(timeout=timeout / 2)
             except subprocess.TimeoutExpired:
@@ -86,10 +84,10 @@ def watcher_getter(request, services_log):
 
             if watcher.poll() is not None:
                 output, err = watcher.communicate()
-                raise Exception("Error running memcached: {0}".format(err))
+                raise Exception("Error running {0}: {1}".format(name, err))
 
             if times > timeout:
-                raise Exception('The memcached socket could not be found!')
+                raise Exception('The {0} service checked did not succeed!'.format(name))
 
             time.sleep(1)
             times += 1
