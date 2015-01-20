@@ -39,7 +39,7 @@ def do_memcached_clean(run_services):
 @pytest.fixture
 def memcached_clean(request, memcached, memcached_socket, do_memcached_clean):
     """Clean memcached instance."""
-    if memcached_clean:
+    if do_memcached_clean:
         with dont_capture(request):
             check_output([
                 "echo 'flush_all' | nc -U {memcached_socket}".format(memcached_socket=memcached_socket)

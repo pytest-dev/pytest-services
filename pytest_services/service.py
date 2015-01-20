@@ -16,7 +16,7 @@ WRONG_FILE_NAME_CHARS_RE = re.compile('[^\w_-]')
 @pytest.fixture(scope='session')
 def run_services(request, slave_id):
     """Indicate whether the services should run or not."""
-    return slave_id == 'local' and not request.config.option.run_services
+    return slave_id != 'local' or request.config.option.run_services
 
 
 @pytest.fixture(scope='session')

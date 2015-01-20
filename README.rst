@@ -104,6 +104,12 @@ Infrastructure fixtures
 * run_dir
     Process id and socket files directory (like system-wide `/var/run` but local for test session). Subfolder of
     `memory_root_dir`.
+* port_getter
+    Function to get unallocated port.
+    Automatically ensures locking and un-locking of it on application level via flock.
+* display_getter
+    Function to get unallocated display.
+    Automatically ensures locking and un-locking of it on application level via flock.
 
 
 Service fixtures

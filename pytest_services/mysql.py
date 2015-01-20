@@ -106,7 +106,7 @@ def mysql_watcher(
 
 
 @pytest.fixture(scope='session')
-def mysq_database_name():
+def mysql_database_name():
     """Name of test database to be created."""
     return 'test'
 
@@ -128,10 +128,10 @@ def mysql_database_getter(run_services, mysql_watcher, mysql_socket):
 
 
 @pytest.fixture(scope='session')
-def mysql_database(run_services, mysql_database_getter, mysq_database_name):
+def mysql_database(run_services, mysql_database_getter, mysql_database_name):
     """Prepare new test database creation function."""
     if run_services:
-        return mysql_database_getter(mysq_database_name)
+        return mysql_database_getter(mysql_database_name)
 
 
 @pytest.fixture(scope='session')

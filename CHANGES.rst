@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.2
+-----
+
+- added port and display getters (bubenkoff)
+
+
 1.0.1
 -----
 

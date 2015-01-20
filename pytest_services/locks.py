@@ -7,6 +7,8 @@ import os
 import socket
 import time
 
+import pytest
+
 marker = object()
 
 
@@ -171,18 +173,26 @@ def get_free_display(lock_dir, services_log):
     return lock_resource('display', get_display, lock_dir, services_log)
 
 
-def get_port(request, name, lock_dir, services_log):
-    """Lock a free port and unlock it on finalizer."""
-    port = get_free_port(lock_dir, services_log)
+@pytest.fixture(scope='session')
+def port_getter(request, lock_dir, services_log):
+    """Lock getter function."""
+    def get_port():
+        """Lock a free port and unlock it on finalizer."""
+        port = get_free_port(lock_dir, services_log)
 
-    def finalize():
-        unlock_port(port, lock_dir, services_log)
-    request.addfinalizer(finalize)
-    return port
+        def finalize():
+            unlock_port(port, lock_dir, services_log)
+        request.addfinalizer(finalize)
+        return port
+    return get_port
 
 
-def get_display(request, lock_dir, services_log):
-    """Lock a free display and unlock it on finalizer."""
-    display = get_free_display(lock_dir, services_log)
-    request.addfinalizer(lambda: unlock_display(display, lock_dir, services_log))
-    return display
+@pytest.fixture(scope='session')
+def display_getter(request, lock_dir, services_log):
+    """Display getter function."""
+    def get_display():
+        """Lock a free display and unlock it on finalizer."""
+        display = get_free_display(lock_dir, services_log)
+        request.addfinalizer(lambda: unlock_display(display, lock_dir, services_log))
+        return display
+    return get_display
