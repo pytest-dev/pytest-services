@@ -125,7 +125,7 @@ Service fixtures
     Determine if memcached should be cleared before every test run. Equals to `run_services` fixture by default.
 * mysql
     Start mysql-server_ instance.
-* mysq_database_name
+* mysql_database_name
     MySQL database name to be created after initialization of the mysql service `system` database.
 * mysql_database_getter
     Function with single parameter - database name. To create additional database(s) for tests.
