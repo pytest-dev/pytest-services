@@ -56,7 +56,7 @@ def watcher_getter(request, services_log):
     Wait for the process to start.
     Add finalizer to properly stop it.
     """
-    def watcher_getter_function(name, arguments=None, timeout=20, checker=None):
+    def watcher_getter_function(name, arguments=None, kwargs=None, timeout=20, checker=None):
         executable = find_executable(name)
         assert executable, 'You have to install {0} executable.'.format(name)
 
@@ -64,7 +64,7 @@ def watcher_getter(request, services_log):
 
         services_log.debug('Starting {0}: {1}'.format(name, arguments))
 
-        watcher = subprocess.Popen(cmd, close_fds=True)
+        watcher = subprocess.Popen(cmd, close_fds=True, **(kwargs or {}))
 
         def finalize():
             try:
