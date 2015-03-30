@@ -1,4 +1,5 @@
 """Tests for pytest-services plugin."""
+import os.path
 import socket
 
 import pylibmc
@@ -47,3 +48,8 @@ def test_display_getter(display_getter):
     display2 = display_getter()
     assert display2
     assert display1 != display2
+
+
+def test_temp_dir(temp_dir):
+    """Test temp dir directory."""
+    assert os.path.isdir(temp_dir)

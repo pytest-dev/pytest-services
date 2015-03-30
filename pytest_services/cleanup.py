@@ -20,7 +20,7 @@ from .locks import (
 
 def clean_stale_locks(lock_dir, session_id, services_log):
     """Clean stale lock of previous test runs."""
-    for lock in glob.iglob(os.path.join(lock_dir, 'pl-*.lock')):
+    for lock in glob.iglob(os.path.join(lock_dir, 'sr-*.lock')):
         services_log.debug('found lock: {0}'.format(lock))
         try:
             handle = lock_file(lock, session_id, operation=fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -42,7 +42,7 @@ def get_session_id(filename):
 
 def clean_disk_artifacts(root_dir, locked_ids, services_log):
     """Clean disk-based artifacts from previous test runs."""
-    for proc in glob.iglob(os.path.join(root_dir, 'pl-*')):
+    for proc in glob.iglob(os.path.join(root_dir, 'sr-*')):
         proc_id = get_session_id(proc)
         if proc_id in locked_ids:
             # not remove current session's folder
@@ -60,7 +60,7 @@ def clean_disk_artifacts(root_dir, locked_ids, services_log):
 
 def clean_memory_artifacts(memory_root_dir, locked_ids, services_log):
     """Clean memory-based artifacts from previous test runs."""
-    for proc in glob.iglob(os.path.join(memory_root_dir, 'pl-*')):
+    for proc in glob.iglob(os.path.join(memory_root_dir, 'sr-*')):
         proc_id = get_session_id(proc)
         if proc_id in locked_ids:
             # not remove current session's folder

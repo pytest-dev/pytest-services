@@ -3,7 +3,7 @@ from distutils.spawn import find_executable
 import re
 try:
     import subprocess32 as subprocess
-except ImportError:
+except ImportError:  # pragma: no cover
     import subprocess
 import time
 import uuid

@@ -14,7 +14,7 @@ def memcached_socket(run_dir, run_services):
 
 
 @pytest.fixture(scope='session')
-def memcached(request, run_services, memcached_socket, watcher_getter):
+def memcached(run_services, memcached_socket, watcher_getter):
     """The memcached instance which is ready to be used by the tests."""
     if run_services:
         return watcher_getter(
