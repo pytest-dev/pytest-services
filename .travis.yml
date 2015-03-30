@@ -1,15 +1,9 @@
 language: python
-install:
-  - pip install python-coveralls virtualenv
+sudo: false
 # # command to run tests
-script: python setup.py test
+script: make test
 after_success:
-  - pip install -r requirements-testing.txt -e .
-  - py.test --cov=pytest_services --cov-report=term-missing tests
-  - coveralls
-branches:
-  except:
-    - /^\d/
+  - make coveralls
 notifications:
     email:
-        - bubenkoff@paylogic.com
+        - bubenkoff@gmail.com
