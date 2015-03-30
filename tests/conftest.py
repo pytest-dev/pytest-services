@@ -1,8 +1,8 @@
 """Configuration for pytest runner."""
 
-pytest_plugins = 'pytester'
-
 import pytest
+
+pytest_plugins = 'pytester'
 
 
 @pytest.fixture(scope='session')

@@ -5,8 +5,8 @@ Services plugin for pytest testing framework
     :target: https://travis-ci.org/pytest-dev/pytest-services
 .. image:: https://pypip.in/v/pytest-services/badge.png
     :target: https://crate.io/packages/pytest-services/
-.. image:: https://coveralls.io/repos/pytest-dev/pytest-services/badge.png?branch=master
-    :target: https://coveralls.io/r/pytest-dev/pytest-services
+.. image:: https://coveralls.io/repos/pytest-dev/pytest-services/badge.svg?branch=master
+    :target: https://coveralls.io/r/pytest-dev/pytest-services?branch=master
 .. image:: https://readthedocs.org/projects/pytest-services/badge/?version=latest
     :target: https://readthedocs.org/projects/pytest-services/?badge=latest
     :alt: Documentation Status
