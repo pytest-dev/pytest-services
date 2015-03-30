@@ -1,5 +1,4 @@
 language: python
-sudo: false
 # # command to run tests
 script: make test
 after_success:
