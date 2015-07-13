@@ -17,7 +17,6 @@ def check_output(*popenargs, **kwargs):
         raise ValueError('stderr argument not allowed, it will be overridden.')
 
     process = subprocess.Popen(
-        stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         *popenargs, **kwargs)

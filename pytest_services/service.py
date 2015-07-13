@@ -64,18 +64,20 @@ def watcher_getter(request, services_log):
 
         services_log.debug('Starting {0}: {1}'.format(name, arguments))
 
-        watcher = subprocess.Popen(cmd, close_fds=True, **(kwargs or {}))
+        watcher = subprocess.Popen(
+            cmd, **(kwargs or {}))
 
         def finalize():
             try:
                 watcher.kill()
             except OSError:
                 pass
-            try:
-                watcher.communicate(timeout=timeout / 2)
-            except subprocess.TimeoutExpired:
-                watcher.terminate()
-                watcher.communicate(timeout=timeout / 2)
+            if watcher.returncode is None:
+                try:
+                    watcher.communicate(timeout=timeout / 2)
+                except subprocess.TimeoutExpired:
+                    watcher.terminate()
+                    watcher.communicate(timeout=timeout / 2)
         request.addfinalizer(finalize)
 
         # Wait for memcached to accept connections.
@@ -83,8 +85,8 @@ def watcher_getter(request, services_log):
         while not checker():
 
             if watcher.poll() is not None:
-                output, err = watcher.communicate()
-                raise Exception("Error running {0}: {1}".format(name, err))
+                watcher.communicate()
+                raise Exception("Error running {0}".format(name))
 
             if times > timeout:
                 raise Exception('The {0} service checked did not succeed!'.format(name))
