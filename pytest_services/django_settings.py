@@ -1,4 +1,5 @@
 """Django setttings helpers."""
+import imp
 import os
 import sys
 
@@ -42,7 +43,7 @@ def reload_settings(settings, databases=None):
     # check if there's settings to reload
     if hasattr(settings, 'ROOT_URLCONF'):
         if settings.ROOT_URLCONF in sys.modules:
-            reload(sys.modules[settings.ROOT_URLCONF])
+            imp.reload(sys.modules[settings.ROOT_URLCONF])
         import_module(settings.ROOT_URLCONF)
         set_urlconf(settings.ROOT_URLCONF)
         settings.LANGUAGE_CODE = 'en'  # all tests should be run with English by default
@@ -83,10 +84,10 @@ def reload_settings(settings, databases=None):
         base.templatetags_modules = None
 
         # reload translation files
-        reload(translation)
-        reload(trans_real)
+        imp.reload(translation)
+        imp.reload(trans_real)
 
         # clear django template loaders cache
         loader.template_source_loaders = None
         from django.template.loaders import app_directories
-        reload(app_directories)
+        imp.reload(app_directories)
