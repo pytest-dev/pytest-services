@@ -1,5 +1,6 @@
 """Logging fixtures and functions."""
 import contextlib
+from logging.handlers import RotatingFileHandler
 import logging
 
 import pytest
@@ -8,7 +9,12 @@ import pytest
 @pytest.fixture(scope='session')
 def services_log(slave_id):
     """A services_logger with the slave id."""
-    return logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
+    handler = RotatingFileHandler('/tmp/pytest-services.log')
+    logger = logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
+    logger.propagate = 0
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+    return logger
 
 
 @contextlib.contextmanager

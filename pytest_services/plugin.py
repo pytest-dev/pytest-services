@@ -3,7 +3,6 @@
 Provides an easy way of running service processes for your tests.
 """
 
-from .cleanup import *  # NOQA
 from .folders import *  # NOQA
 from .log import *  # NOQA
 from .locks import *  # NOQA

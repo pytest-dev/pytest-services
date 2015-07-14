@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.9
+-----
+
+- removed auto artifacts cleanup (bubenkoff)
+
+
 1.0.8
 -----
 
