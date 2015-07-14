@@ -12,18 +12,19 @@ from .process import (
 
 
 @pytest.fixture(scope='session')
-def mysql_defaults_file(mysql_data_dir, memory_temp_dir):
+def mysql_defaults_file(run_services, mysql_data_dir, memory_temp_dir):
     """MySQL defaults file."""
-    defaults_path = os.path.join(mysql_data_dir, 'defaults.cnf')
+    if run_services:
+        defaults_path = os.path.join(mysql_data_dir, 'defaults.cnf')
 
-    with open(defaults_path, 'w+') as fd:
-        fd.write("""
+        with open(defaults_path, 'w+') as fd:
+            fd.write("""
 [mysqld]
 user = {user}
 tmpdir = {tmpdir}
 default-time-zone = SYSTEM
-""".format(user=os.environ['USER'], tmpdir=memory_temp_dir))
-    return defaults_path
+    """.format(user=os.environ['USER'], tmpdir=memory_temp_dir))
+        return defaults_path
 
 
 @pytest.fixture(scope='session')
