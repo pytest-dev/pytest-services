@@ -1,5 +1,5 @@
 """Service fixtures."""
-from distutils.spawn import find_executable
+from distutils.spawn import find_executable  # pylint: disable=E0611
 import re
 try:
     import subprocess32 as subprocess
@@ -10,7 +10,7 @@ import uuid
 
 import pytest
 
-WRONG_FILE_NAME_CHARS_RE = re.compile('[^\w_-]')
+WRONG_FILE_NAME_CHARS_RE = re.compile(r'[^\w_-]')
 
 
 @pytest.fixture(scope='session')
@@ -83,9 +83,7 @@ def watcher_getter(request, services_log):
         # Wait for memcached to accept connections.
         times = 0
         while not checker():
-
-            if watcher.poll() is not None:
-                watcher.communicate()
+            if watcher.returncode is not None:
                 raise Exception("Error running {0}".format(name))
 
             if times > timeout:

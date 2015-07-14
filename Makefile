@@ -21,3 +21,7 @@ coveralls: coverage
 # clean the development envrironment
 clean:
 	-rm -rf .env
+
+# debian dependencies
+dependencies:
+	sudo apt-get install `grep -vh '#' DEPENDENCIES*`

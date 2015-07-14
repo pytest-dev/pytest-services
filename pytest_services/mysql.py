@@ -2,7 +2,7 @@
 import os
 import shutil
 
-from distutils.spawn import find_executable
+from distutils.spawn import find_executable  # pylint: disable=E0611
 import pytest
 
 from .process import (
@@ -12,7 +12,22 @@ from .process import (
 
 
 @pytest.fixture(scope='session')
-def mysql_system_database(run_services, mysql_data_dir, memory_temp_dir, lock_dir, services_log):
+def mysql_defaults_file(mysql_data_dir, memory_temp_dir):
+    """MySQL defaults file."""
+    defaults_path = os.path.join(mysql_data_dir, 'defaults.cnf')
+
+    with open(defaults_path, 'w+') as fd:
+        fd.write("""
+[mysqld]
+user = {user}
+tmpdir = {tmpdir}
+default-time-zone = SYSTEM
+""".format(user=os.environ['USER'], tmpdir=memory_temp_dir))
+    return defaults_path
+
+
+@pytest.fixture(scope='session')
+def mysql_system_database(run_services, mysql_data_dir, mysql_defaults_file, memory_temp_dir, lock_dir, services_log):
     """Install database to given path."""
     if run_services:
         mysql_install_db = find_executable('mysql_install_db')
@@ -23,24 +38,15 @@ def mysql_system_database(run_services, mysql_data_dir, memory_temp_dir, lock_di
 
         mysql_basedir = os.path.dirname(os.path.dirname(my_print_defaults))
 
-        defaults_path = os.path.join(mysql_data_dir, 'defaults.cnf')
-
-        with open(defaults_path, 'w+') as fd:
-            fd.write("""
-    [mysqld]
-    user = {user}
-    tmpdir = {tmpdir}
-    """.format(user=os.environ['USER'], tmpdir=memory_temp_dir))
-
         try:
             services_log.debug('Starting mysql_install_db.')
             check_output([
                 mysql_install_db,
-                '--defaults-file={0}'.format(defaults_path),
+                '--defaults-file={0}'.format(mysql_defaults_file),
                 '--datadir={0}'.format(mysql_data_dir),
                 '--basedir={0}'.format(mysql_basedir),
-                '--user={0}'.format(os.environ['USER'])],
-            )
+                '--user={0}'.format(os.environ['USER'])
+            ])
         except CalledProcessWithOutputError as e:
             services_log.error(
                 '{e.cmd} failed with output:\n{e.output}\nand erorr:\n{e.err}. '
@@ -92,16 +98,16 @@ def mysql_connection(run_services, mysql_socket):
 
 @pytest.fixture(scope='session')
 def mysql_watcher(
-        request, run_services, watcher_getter, mysql_system_database, mysql_pid, mysql_socket, mysql_data_dir):
+        request, run_services, watcher_getter, mysql_system_database, mysql_pid, mysql_socket, mysql_data_dir,
+        mysql_defaults_file):
     """The mysqld process watcher."""
     if run_services:
         return watcher_getter('mysqld', [
+            '--defaults-file={0}'.format(mysql_defaults_file),
             '--datadir={mysql_data_dir}'.format(mysql_data_dir=mysql_data_dir),
             '--pid-file={mysql_pid}'.format(mysql_pid=mysql_pid),
             '--socket={mysql_socket}'.format(mysql_socket=mysql_socket),
             '--skip-networking',
-            '--general-log=true',
-            '--log-error={mysql_data_dir}/error.log'.format(mysql_data_dir=mysql_data_dir)
         ], checker=lambda: os.path.exists(mysql_socket))
 
 
@@ -116,13 +122,17 @@ def mysql_database_getter(run_services, mysql_watcher, mysql_socket):
     """Prepare new test database creation function."""
     if run_services:
         def getter(database_name):
-            return check_output(
+            check_output(
                 [
                     'mysql',
                     '--user=root',
                     '--socket={0}'.format(mysql_socket),
                     '--execute=create database {0};'.format(database_name),
                 ],
+            )
+            check_output(
+                'mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user=root --socket={0} mysql'.format(mysql_socket),
+                shell=True
             )
         return getter
 

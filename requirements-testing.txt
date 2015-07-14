@@ -1,6 +1,8 @@
 # apt-get install xvfb python-dev libmemcached-dev libmysqlclient-dev
+coverage
 mock
 mysqlclient
 pylibmc
-pytest-cov
 pytest-pep8
+pylama
+pylama_pylint

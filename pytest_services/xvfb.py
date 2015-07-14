@@ -37,12 +37,11 @@ def xvfb_resolution():
 @pytest.fixture(scope='session')
 def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher_getter):
     """The Xvfb process."""
-    if (request.config.option.display or not run_services):
+    if request.config.option.display or not run_services:
         # display is passed, no action required
         return
-    with file_lock(
-            os.path.join(lock_dir, 'xvfb_{0}.lock'.format(xvfb_display)),
-            operation=fcntl.LOCK_EX | fcntl.LOCK_NB):
+    with file_lock(os.path.join(lock_dir, 'xvfb_{0}.lock'.format(xvfb_display)),
+                   operation=fcntl.LOCK_EX | fcntl.LOCK_NB):
 
         def checker():
             try:

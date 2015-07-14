@@ -88,7 +88,7 @@ def memory_temp_dir(request, memory_base_dir, services_log):
 @pytest.fixture(scope='session')
 def lock_dir(memory_root_dir, services_log):
     """The lock dir."""
-    path = os.path.join(memory_root_dir, 'sr-lock')
+    path = os.path.join(memory_root_dir, 'service-locks')
     services_log.debug('ensuring lock dir: {0}'.format(path))
     if not os.path.exists(path):
         try:

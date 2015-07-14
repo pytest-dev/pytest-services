@@ -125,7 +125,7 @@ def unlock_display(display, lock_dir, services_log):
 
 
 def lock_resource(name, resource_getter, lock_dir, services_log):
-    """"""
+    """Issue a lock for given resource."""
     with locked_resources(name, lock_dir) as bound_resources:
         services_log.debug('bound_resources {0}: {1}'.format(name, bound_resources))
 

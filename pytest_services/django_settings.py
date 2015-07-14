@@ -30,13 +30,14 @@ def clean_django_settings():
     django_settings._wrapped = None
 
 
-def reload_settings(settings, databases):
+def reload_settings(settings, databases=None):
     """Special routine to reload django settings.
 
     Including:
     urlconf module, context processor, templatetags settings, database settings.
     """
-    settings.DATABASES.update(databases)
+    if databases:
+        settings.DATABASES.update(databases)
 
     # check if there's settings to reload
     if hasattr(settings, 'ROOT_URLCONF'):

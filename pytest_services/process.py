@@ -36,6 +36,7 @@ class CalledProcessWithOutputError(subprocess.CalledProcessError):
     """An exception with the steout and stderr of a failed subprocess32."""
 
     def __init__(self, returncode, cmd, output, err):
+        """Assign output and error."""
         super(CalledProcessWithOutputError, self).__init__(returncode, cmd)
 
         self.output = output

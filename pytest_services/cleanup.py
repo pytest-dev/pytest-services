@@ -50,7 +50,7 @@ def clean_disk_artifacts(root_dir, locked_ids, services_log):
             continue
         try:
             args = ['pkill', '-u', os.environ['USER'], '-f', proc_id]
-            services_log.debug('killing: {0}'.format(['pkill', '-u', os.environ['USER'], '-f', proc_id]))
+            services_log.debug('killing: {0}'.format(args))
             check_output(args)
         except CalledProcessWithOutputError:
             pass
