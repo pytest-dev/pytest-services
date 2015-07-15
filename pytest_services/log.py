@@ -1,7 +1,8 @@
 """Logging fixtures and functions."""
 import contextlib
-from logging.handlers import RotatingFileHandler
 import logging
+import logging.handlers
+import socket
 
 import pytest
 
@@ -9,7 +10,13 @@ import pytest
 @pytest.fixture(scope='session')
 def services_log(slave_id):
     """A services_logger with the slave id."""
-    handler = RotatingFileHandler('/tmp/pytest-services.log')
+    for kwargs in (dict(socktype=socket.SOCK_RAW), dict(socktype=socket.SOCK_STREAM), dict()):
+        try:
+            handler = logging.handlers.SysLogHandler(
+                facility=logging.handlers.SysLogHandler.LOG_LOCAL7, address='/dev/log', **kwargs)
+            break
+        except (IOError, TypeError):
+            pass
     logger = logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
     logger.propagate = 0
     logger.setLevel(logging.DEBUG)
