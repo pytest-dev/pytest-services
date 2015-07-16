@@ -10,6 +10,7 @@ import pytest
 @pytest.fixture(scope='session')
 def services_log(slave_id):
     """A services_logger with the slave id."""
+    handler = None
     for kwargs in (dict(socktype=socket.SOCK_RAW), dict(socktype=socket.SOCK_STREAM), dict()):
         try:
             handler = logging.handlers.SysLogHandler(
@@ -18,9 +19,10 @@ def services_log(slave_id):
         except (IOError, TypeError):
             pass
     logger = logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
-    logger.propagate = 0
     logger.setLevel(logging.DEBUG)
-    logger.addHandler(handler)
+    if handler:
+        logger.propagate = 0
+        logger.addHandler(handler)
     return logger
 
 
