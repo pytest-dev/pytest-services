@@ -4,6 +4,12 @@ Changelog
 1.1.0
 -----
 
+- old django support fix (olegpidsadnyi)
+
+
+1.1.0
+-----
+
 - django 1.7+ support (bubenkoff)
 
 
