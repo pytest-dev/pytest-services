@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1.0
+-----
+
+- django 1.7+ support (bubenkoff)
+
+
 1.0.7
 -----
 

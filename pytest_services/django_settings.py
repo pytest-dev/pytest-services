@@ -44,6 +44,8 @@ def reload_settings(settings, databases=None):
     if hasattr(settings, 'ROOT_URLCONF'):
         if settings.ROOT_URLCONF in sys.modules:
             imp.reload(sys.modules[settings.ROOT_URLCONF])
+        import django
+        django.setup()
         import_module(settings.ROOT_URLCONF)
         set_urlconf(settings.ROOT_URLCONF)
         settings.LANGUAGE_CODE = 'en'  # all tests should be run with English by default
