@@ -1,6 +1,8 @@
 """Logging fixtures and functions."""
 import contextlib
 import logging
+import logging.handlers
+import socket
 
 import pytest
 
@@ -8,7 +10,20 @@ import pytest
 @pytest.fixture(scope='session')
 def services_log(slave_id):
     """A services_logger with the slave id."""
-    return logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
+    handler = None
+    for kwargs in (dict(socktype=socket.SOCK_RAW), dict(socktype=socket.SOCK_STREAM), dict()):
+        try:
+            handler = logging.handlers.SysLogHandler(
+                facility=logging.handlers.SysLogHandler.LOG_LOCAL7, address='/dev/log', **kwargs)
+            break
+        except (IOError, TypeError):
+            pass
+    logger = logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
+    logger.setLevel(logging.DEBUG)
+    if handler:
+        logger.propagate = 0
+        logger.addHandler(handler)
+    return logger
 
 
 @contextlib.contextmanager

@@ -13,7 +13,7 @@ def root_dir():
 
 
 @pytest.yield_fixture(scope='session')
-def base_dir(request, test_cleanup, session_id, root_dir, services_log):
+def base_dir(request, session_id, root_dir, services_log):
     """The directory where test run artifacts should be stored.
 
     It is responsibility of fixtures and tests that depend on it to clean up
@@ -54,7 +54,7 @@ def memory_root_dir(root_dir):
 
 
 @pytest.yield_fixture(scope='session')
-def memory_base_dir(request, test_cleanup, session_id, memory_root_dir, services_log):
+def memory_base_dir(request, session_id, memory_root_dir, services_log):
     """The directory where memory test run artifacts should be stored.
 
     It is responsibility of fixtures and tests that depend on it to clean up

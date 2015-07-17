@@ -7,7 +7,13 @@ Changelog
 - django 1.7+ support (bubenkoff)
 
 
-1.0.7
+1.0.10
+------
+
+- removed auto artifacts cleanup (bubenkoff)
+
+
+1.0.8
 -----
 
 - fixed popen arguments (bubenkoff)
