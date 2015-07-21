@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1.3
+-----
+
+- django 1.8 support (bubenkoff)
+
+
 1.1.2
 -----
 
