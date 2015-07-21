@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.0
+1.1.2
 -----
 
 - old django support fix (olegpidsadnyi)

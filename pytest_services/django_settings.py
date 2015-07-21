@@ -77,7 +77,7 @@ def reload_settings(settings, databases=None):
         django.db.backend = load_backend(django.db.connection.settings_dict['ENGINE'])
 
         import django.core.cache
-        django.core.cache.cache = django.core.cache.get_cache(django.core.cache.DEFAULT_CACHE_ALIAS)
+        django.core.cache.cache = django.core.cache._create_cache(django.core.cache.DEFAULT_CACHE_ALIAS)
 
         # clear django urls cache
         clear_url_caches()
