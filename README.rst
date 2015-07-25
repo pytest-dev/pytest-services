@@ -198,7 +198,7 @@ Contact
 -------
 
 If you have questions, bug reports, suggestions, etc. please create an issue on
-the `GitHub project page <http://github.com/paylogic/pytest-services>`_.
+the `GitHub project page <https://github.com/pytest-dev/pytest-services>`_.
 
 
 License
@@ -206,7 +206,7 @@ License
 
 This software is licensed under the `MIT license <http://en.wikipedia.org/wiki/MIT_License>`_
 
-See `License file <https://github.com/paylogic/pytest-services/blob/master/LICENSE.txt>`_
+See `License file <https://github.com/pytest-dev/pytest-services/blob/master/LICENSE.txt>`_
 
 
 © 2014 Anatoly Bubenkov, Paylogic International and others.
