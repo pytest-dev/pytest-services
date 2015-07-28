@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1.4
+-----
+
+- django settings fix (olegpidsadnyi)
+
+
 1.1.3
 -----
 

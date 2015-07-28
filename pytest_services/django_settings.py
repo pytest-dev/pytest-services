@@ -102,5 +102,6 @@ def reload_settings(settings, databases=None):
     django.template.engines.__dict__.pop('templates', None)
     django.template.engines._templates = None
     django.template.engines._engines = {}
-    django.apps.apps.set_installed_apps(settings.INSTALLED_APPS)
+    if django.apps.apps.ready:
+        django.apps.apps.set_installed_apps(settings.INSTALLED_APPS)
     django.setup()
