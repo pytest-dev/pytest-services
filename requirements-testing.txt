@@ -4,5 +4,5 @@ mock
 mysqlclient
 pylibmc
 pytest-pep8
-pylama
-pylama_pylint
+pylama==6.3.4
+pylama_pylint==2.1.0
