@@ -1,13 +1,7 @@
 Changelog
 =========
 
-1.1.6
------
-
-- no locking for xvfb (bubenkoff)
-
-
-1.1.4
+1.1.7
 -----
 
 - django settings fix (olegpidsadnyi)
