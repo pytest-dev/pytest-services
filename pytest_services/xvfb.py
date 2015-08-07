@@ -54,6 +54,7 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
             'Xvfb', [
                 ':{display}'.format(display=xvfb_display),
                 '-screen',
+                '-nolock',
                 '0',
                 'x'.join(str(value) for value in xvfb_resolution),
                 '-ac',

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1.5
+-----
+
+- no locking for xvfb (bubenkoff)
+
+
 1.1.4
 -----
 
