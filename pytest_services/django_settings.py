@@ -4,6 +4,7 @@ import os
 import sys
 
 from importlib import import_module
+import django
 from django.core.urlresolvers import clear_url_caches, set_urlconf
 from django.template import context, base, loader
 from django.utils import translation
@@ -12,15 +13,18 @@ from django.utils.translation import trans_real
 
 def setup_django_settings(test_settings):
     """Override the enviroment variable and call the _setup method of the settings object to reload them."""
-    os.environ['DJANGO_SETTINGS_MODULE'] = test_settings
+    if os.environ['DJANGO_SETTINGS_MODULE'] != test_settings:
+        os.environ['DJANGO_SETTINGS_MODULE'] = test_settings
 
-    from django.conf import settings as django_settings
+        from django.conf import settings as django_settings
 
-    # (re)setup django settings
-    django_settings._setup()
+        # (re)setup django settings
+        django_settings._setup()
 
-    # reload settings
-    reload_settings(django_settings)
+        # reload settings
+        reload_settings(django_settings)
+    elif not django.apps.apps.ready:
+        django.setup()
 
 
 def clean_django_settings():
@@ -103,6 +107,5 @@ def reload_settings(settings, databases=None):
         django.template.engines.__dict__.pop('templates', None)
         django.template.engines._templates = None
         django.template.engines._engines = {}
-    if django.apps.apps.ready:
         django.apps.apps.set_installed_apps(settings.INSTALLED_APPS)
-    django.setup()
+        django.setup()

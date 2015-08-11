@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1.8
+1.1.9
 -----
 
 - django settings fix (olegpidsadnyi)
