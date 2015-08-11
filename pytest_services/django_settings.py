@@ -94,14 +94,15 @@ def reload_settings(settings, databases=None):
         loader.template_source_loaders = None
         from django.template.loaders import app_directories
         imp.reload(app_directories)
-    from django.template.base import get_templatetags_modules
-    get_templatetags_modules.cache_clear()
-    import django.apps
-    import django
-    import django.template
-    django.template.engines.__dict__.pop('templates', None)
-    django.template.engines._templates = None
-    django.template.engines._engines = {}
+        from django.template.base import get_templatetags_modules
+        get_templatetags_modules.cache_clear()
+        django.template.utils.get_app_template_dirs.cache_clear()
+        import django.apps
+        import django
+        import django.template
+        django.template.engines.__dict__.pop('templates', None)
+        django.template.engines._templates = None
+        django.template.engines._engines = {}
     if django.apps.apps.ready:
         django.apps.apps.set_installed_apps(settings.INSTALLED_APPS)
     django.setup()
