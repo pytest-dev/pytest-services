@@ -170,6 +170,7 @@ def get_free_display(lock_dir, services_log):
                 display = max(bound_resources) + 1
             if os.path.exists('/tmp/.X{0}-lock'.format(display)):
                 display += 1
+                continue
             return display
 
     return lock_resource('display', get_display, lock_dir, services_log)
