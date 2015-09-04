@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1.8
------
+1.1.10
+------
 
 - exclude locked displays for xvfb (bubenkoff)
 
