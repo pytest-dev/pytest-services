@@ -164,11 +164,13 @@ def get_free_port(lock_dir, services_log):
 def get_free_display(lock_dir, services_log):
     """Get free display to listen on."""
     def get_display(bound_resources):
-        if bound_resources:
-            display = max(bound_resources) + 1
-        else:
-            display = 100
-        return display
+        display = 100
+        while True:
+            if bound_resources:
+                display = max(bound_resources) + 1
+            if os.path.exists('/tmp/.X{0}-lock'.format(display)):
+                display += 1
+            return display
 
     return lock_resource('display', get_display, lock_dir, services_log)
 
