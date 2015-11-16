@@ -4,6 +4,12 @@ Changelog
 1.1.11
 ------
 
+- use realpath for mysql base dir (bubenkoff)
+
+
+1.1.10
+------
+
 - exclude locked displays for xvfb (bubenkoff)
 
 

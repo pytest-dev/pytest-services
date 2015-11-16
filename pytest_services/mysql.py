@@ -37,7 +37,7 @@ def mysql_system_database(run_services, mysql_data_dir, mysql_defaults_file, mem
         my_print_defaults = find_executable('my_print_defaults')
         assert my_print_defaults, 'You have to install my_print_defaults script.'
 
-        mysql_basedir = os.path.dirname(os.path.dirname(my_print_defaults))
+        mysql_basedir = os.path.dirname(os.path.dirname(os.path.realpath(my_print_defaults)))
 
         try:
             services_log.debug('Starting mysql_install_db.')
