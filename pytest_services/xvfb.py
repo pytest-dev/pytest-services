@@ -2,12 +2,29 @@
 import os
 import fcntl
 import socket
+import re
+try:
+    import subprocess32 as subprocess
+except ImportError:  # pragma: no cover
+    import subprocess
 
 import pytest
 
 from .locks import (
     file_lock,
 )
+
+
+def x_version():
+    output = subprocess.check_output(['Xorg', '-version'], stderr=subprocess.STDOUT)
+
+    match = re.search(
+        r'^X\.Org X Server (?P<version>[\d\.]+)$',
+        output,
+        flags=re.MULTILINE,
+    ).groupdict()
+    version = match['version']
+    return tuple(int(d) for d in version.split('.'))
 
 
 @pytest.fixture(scope='session')
@@ -40,6 +57,12 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
     if request.config.option.display or not run_services:
         # display is passed, no action required
         return
+
+    if x_version() < (1, 16, 99, 901):
+        listen_args = []
+    else:
+        listen_args = ['-listen', 'TCP']
+
     with file_lock(os.path.join(lock_dir, 'xvfb_{0}.lock'.format(xvfb_display)),
                    operation=fcntl.LOCK_EX | fcntl.LOCK_NB):
 
@@ -58,8 +81,7 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
                 'x'.join(str(value) for value in xvfb_resolution),
                 '-ac',
                 '-nolock',
-                '+extension', 'RANDR',
-                '-listen', 'TCP',
-            ],
+                '+extension', 'RANDR'
+            ] + listen_args,
             checker=checker
         )
