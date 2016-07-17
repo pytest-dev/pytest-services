@@ -58,7 +58,8 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
                 'x'.join(str(value) for value in xvfb_resolution),
                 '-ac',
                 '-nolock',
-                '+extension', 'RANDR'
+                '+extension', 'RANDR',
+                '-listen', 'TCP',
             ],
             checker=checker
         )
