@@ -19,7 +19,7 @@ def x_version():
     output = subprocess.check_output(['Xorg', '-version'], stderr=subprocess.STDOUT)
 
     match = re.search(
-        r'^X\.Org X Server (?P<version>[\d\.]+)$',
+        br'^X\.Org X Server (?P<version>[\d\.]+)$',
         output,
         flags=re.MULTILINE,
     ).groupdict()
