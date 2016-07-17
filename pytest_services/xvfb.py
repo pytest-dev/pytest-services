@@ -24,7 +24,7 @@ def x_version():
         flags=re.MULTILINE,
     ).groupdict()
     version = match['version']
-    return tuple(int(d) for d in version.split('.'))
+    return tuple(int(d) for d in version.split(b'.'))
 
 
 @pytest.fixture(scope='session')
