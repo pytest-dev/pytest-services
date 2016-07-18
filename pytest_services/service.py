@@ -1,13 +1,13 @@
 """Service fixtures."""
-from distutils.spawn import find_executable  # pylint: disable=E0611
+import time
 import re
 try:
     import subprocess32 as subprocess
 except ImportError:  # pragma: no cover
     import subprocess
-import time
 import uuid
 
+from distutils.spawn import find_executable  # pylint: disable=E0611
 import pytest
 
 WRONG_FILE_NAME_CHARS_RE = re.compile(r'[^\w_-]')
