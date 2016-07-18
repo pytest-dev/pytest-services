@@ -16,6 +16,7 @@ from .locks import (
 
 
 def x_version():
+    """Xorg version."""
     output = subprocess.check_output(['Xorg', '-version'], stderr=subprocess.STDOUT)
 
     match = re.search(

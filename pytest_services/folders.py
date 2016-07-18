@@ -1,8 +1,8 @@
 """Fixtures for supporting a distributed test run."""
 import os
-import psutil
 import shutil
 
+import psutil
 import pytest
 
 
