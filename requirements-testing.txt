@@ -6,4 +6,4 @@ pylibmc
 pytest-pep8
 pylama
 pylama_pylint
-astroid==1.3.6
+astroid
