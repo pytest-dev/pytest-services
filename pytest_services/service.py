@@ -5,7 +5,7 @@ try:
     import subprocess32 as subprocess
 except ImportError:  # pragma: no cover
     import subprocess
-import uuid
+import uuid  # pylint: disable=C0411
 
 from distutils.spawn import find_executable  # pylint: disable=E0611
 import pytest
