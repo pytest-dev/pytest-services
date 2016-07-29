@@ -31,7 +31,7 @@ def xvfb_supports_listen():
         flags=re.MULTILINE,
     ).groupdict()
     unrecognized_option = match['option']
-    return unrecognized_option != '-listen'
+    return unrecognized_option != b'-listen'
 
 
 @pytest.fixture(scope='session')
