@@ -15,17 +15,23 @@ from .locks import (
 )
 
 
-def x_version():
-    """Xorg version."""
-    output = subprocess.check_output(['Xorg', '-version'], stderr=subprocess.STDOUT)
+def xvfb_supports_listen():
+    """Determine whether the '-listen' option is supported by Xvfb."""
+    p = subprocess.Popen(
+        ['Xvfb', '-listen', 'TCP', '-__sentinel_parameter__'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    p.wait()
+    _, stderr = p.communicate()
 
     match = re.search(
-        br'^X\.Org X Server (?P<version>[\d\.]+)$',
-        output,
+        br'^Unrecognized option: (?P<option>.*)$',
+        stderr,
         flags=re.MULTILINE,
     ).groupdict()
-    version = match['version']
-    return tuple(int(d) for d in version.split(b'.'))
+    unrecognized_option = match['option']
+    return unrecognized_option != b'-listen'
 
 
 @pytest.fixture(scope='session')
@@ -59,10 +65,10 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
         # display is passed, no action required
         return
 
-    if x_version() < (1, 16, 99, 901):
-        listen_args = []
-    else:
+    if xvfb_supports_listen():
         listen_args = ['-listen', 'TCP']
+    else:
+        listen_args = []
 
     with file_lock(os.path.join(lock_dir, 'xvfb_{0}.lock'.format(xvfb_display)),
                    operation=fcntl.LOCK_EX | fcntl.LOCK_NB):
@@ -84,5 +90,5 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
                 '-nolock',
                 '+extension', 'RANDR'
             ] + listen_args,
-            checker=checker
+            checker=checker,
         )
