@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1.14
+------
+
+- Use a different strategy to determine whether xvfb supports (youtux )
+
+
 1.1.12
 ------
 
