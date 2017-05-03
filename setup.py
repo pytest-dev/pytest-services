@@ -18,6 +18,7 @@ install_requires = [
     'setuptools',
     'requests',
     'psutil',
+    'pylibmc',
     'pytest',
 ]
 
