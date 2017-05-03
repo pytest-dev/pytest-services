@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1.15
+------
+
+- Fixed hang with updated netcat-openbsd>=1.130.3 (joepvandijken)
+
+
 1.1.14
 ------
 

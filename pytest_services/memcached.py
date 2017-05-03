@@ -2,8 +2,7 @@
 import os
 import pytest
 
-from .log import dont_capture
-from .process import check_output
+from pylibmc import Client
 
 
 @pytest.fixture(scope='session')
@@ -36,11 +35,14 @@ def do_memcached_clean(run_services):
     return run_services
 
 
+@pytest.fixture(scope='session')
+def memcached_client(memcached_socket, memcached):
+    """Create client for memcached."""
+    return Client([memcached_socket])
+
+
 @pytest.fixture
-def memcached_clean(request, memcached, memcached_socket, do_memcached_clean):
+def memcached_clean(request, memcached_client, do_memcached_clean):
     """Clean memcached instance."""
     if do_memcached_clean:
-        with dont_capture(request):
-            check_output([
-                "echo 'flush_all' | nc -U {memcached_socket}".format(memcached_socket=memcached_socket)
-            ], shell=True)
+        memcached_client.flush_all()

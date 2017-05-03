@@ -49,8 +49,7 @@ def memory_root_dir(root_dir):
     # check for a free space for at least 8 parallel processes
     if os.path.exists('/dev/shm') and psutil.disk_usage('/dev/shm').free > 1024 * 1024 * 64 * 10:
         return '/dev/shm'
-    else:
-        return root_dir
+    return root_dir
 
 
 @pytest.yield_fixture(scope='session')
