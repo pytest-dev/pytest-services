@@ -60,7 +60,7 @@ def watcher_getter(request, services_log):
         executable = find_executable(name)
         assert executable, 'You have to install {0} executable.'.format(name)
 
-        cmd = [name] + arguments or []
+        cmd = [name] + (arguments or [])
 
         services_log.debug('Starting {0}: {1}'.format(name, arguments))
 
