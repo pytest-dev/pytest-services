@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.2.1
+-----
+
+- Swap kill and terminate in watcher_getter finalization, allowing
+  for a more polite SIGTERM for terminating child procs on Unix. See
+  #15 for details (jaraco)
+
 1.2.0
 -----
 
