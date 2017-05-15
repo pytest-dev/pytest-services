@@ -69,14 +69,14 @@ def watcher_getter(request, services_log):
 
         def finalize():
             try:
-                watcher.kill()
+                watcher.terminate()
             except OSError:
                 pass
             if watcher.returncode is None:
                 try:
                     watcher.communicate(timeout=timeout / 2)
                 except subprocess.TimeoutExpired:
-                    watcher.terminate()
+                    watcher.kill()
                     watcher.communicate(timeout=timeout / 2)
         request.addfinalizer(finalize)
 
