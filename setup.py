@@ -18,7 +18,6 @@ install_requires = [
     'setuptools',
     'requests',
     'psutil',
-    'pylibmc',
     'pytest',
 ]
 
@@ -38,6 +37,9 @@ setup(
     version=pytest_services.__version__,
     url='https://github.com/pytest-dev/pytest-services',
     install_requires=install_requires,
+    extras={
+        'memcached': ['pylibmc'],
+    },
     classifiers=[
         'Development Status :: 6 - Mature',
         'Intended Audience :: Developers',

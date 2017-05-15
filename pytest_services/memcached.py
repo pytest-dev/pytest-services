@@ -2,8 +2,6 @@
 import os
 import pytest
 
-from pylibmc import Client
-
 
 @pytest.fixture(scope='session')
 def memcached_socket(run_dir, run_services):
@@ -38,7 +36,8 @@ def do_memcached_clean(run_services):
 @pytest.fixture(scope='session')
 def memcached_client(memcached_socket, memcached):
     """Create client for memcached."""
-    return Client([memcached_socket])
+    mc = pytest.importorskip('pylibmc')
+    return mc.Client([memcached_socket])
 
 
 @pytest.fixture
