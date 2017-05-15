@@ -117,16 +117,17 @@ Service fixtures
 
 * memcached
     Start memcached_ instance.
+    Requires `pylibmc` installed or `memcache` indicated as an extra (`pip install 'pytest-services[memcached]'`).
 * memcached_socket
     Memcached unix socket file name to be used for connection.
 * memcached_connection
     Memcached connection string.
 * do_memcached_clean
-    Determine if memcached should be cleared before every test run. Equals to `run_services` fixture by default. Requires `pylibmc` installed or `memcache` indicated
-    as an extra.
+    Determine if memcached should be cleared before every test run. Equals to `run_services` fixture by default.
+    Requires `pylibmc` installed or `memcache` indicated as an extra (`pip install 'pytest-services[memcached]'`).
 * memcached_client
-    A pylibmc.Client instance bound to the service. Requires `pylibmc` installed
-    or `memcache` indicated as an extra.
+    A pylibmc.Client instance bound to the service.
+    Requires `pylibmc` installed or `memcache` indicated as an extra (`pip install 'pytest-services[memcached]'`).
 * mysql
     Start mysql-server_ instance.
 * mysql_database_name

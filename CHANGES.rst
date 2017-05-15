@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.2.0
+-----
+
+- Make pylibmc an optional dependency, available as an extra (jaraco)
+
+
 1.1.15
 ------
 
