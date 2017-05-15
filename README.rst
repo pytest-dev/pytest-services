@@ -1,16 +1,21 @@
 Services plugin for pytest testing framework
 ============================================
 
-.. image:: https://api.travis-ci.org/pytest-dev/pytest-services.png
+.. image:: https://badges.gitter.im/pytest-dev/pytest-services.svg
+   :alt: Join the chat at https://gitter.im/pytest-dev/pytest-services
+   :target: https://gitter.im/pytest-dev/pytest-services?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
+.. image:: https://img.shields.io/pypi/v/pytest-services.svg
+   :target: https://pypi.python.org/pypi/pytest-services
+.. image:: https://img.shields.io/pypi/pyversions/pytest-services.svg
+  :target: https://pypi.python.org/pypi/pytest-services
+.. image:: https://img.shields.io/coveralls/pytest-dev/pytest-services/master.svg
+   :target: https://coveralls.io/r/pytest-dev/pytest-services
+.. image:: https://travis-ci.org/pytest-dev/pytest-services.svg?branch=master
     :target: https://travis-ci.org/pytest-dev/pytest-services
-.. image:: https://pypip.in/v/pytest-services/badge.png
-    :target: https://crate.io/packages/pytest-services/
-.. image:: https://coveralls.io/repos/pytest-dev/pytest-services/badge.svg?branch=master
-    :target: https://coveralls.io/r/pytest-dev/pytest-services?branch=master
 .. image:: https://readthedocs.org/projects/pytest-services/badge/?version=latest
     :target: https://readthedocs.org/projects/pytest-services/?badge=latest
     :alt: Documentation Status
-
 
 Install pytest-services
 -----------------------
