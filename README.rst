@@ -1,10 +1,6 @@
 Services plugin for pytest testing framework
 ============================================
 
-.. image:: https://badges.gitter.im/pytest-dev/pytest-services.svg
-   :alt: Join the chat at https://gitter.im/pytest-dev/pytest-services
-   :target: https://gitter.im/pytest-dev/pytest-services?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-
 .. image:: https://img.shields.io/pypi/v/pytest-services.svg
    :target: https://pypi.python.org/pypi/pytest-services
 .. image:: https://img.shields.io/pypi/pyversions/pytest-services.svg
