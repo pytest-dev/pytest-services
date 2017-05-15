@@ -122,7 +122,11 @@ Service fixtures
 * memcached_connection
     Memcached connection string.
 * do_memcached_clean
-    Determine if memcached should be cleared before every test run. Equals to `run_services` fixture by default.
+    Determine if memcached should be cleared before every test run. Equals to `run_services` fixture by default. Requires `pylibmc` installed or `memcache` indicated
+    as an extra.
+* memcached_client
+    A pylibmc.Client instance bound to the service. Requires `pylibmc` installed
+    or `memcache` indicated as an extra.
 * mysql
     Start mysql-server_ instance.
 * mysql_database_name
