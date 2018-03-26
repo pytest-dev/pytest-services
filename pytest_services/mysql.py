@@ -103,13 +103,18 @@ def mysql_watcher(
         mysql_defaults_file):
     """The mysqld process watcher."""
     if run_services:
-        return watcher_getter('mysqld', [
-            '--defaults-file={0}'.format(mysql_defaults_file),
-            '--datadir={mysql_data_dir}'.format(mysql_data_dir=mysql_data_dir),
-            '--pid-file={mysql_pid}'.format(mysql_pid=mysql_pid),
-            '--socket={mysql_socket}'.format(mysql_socket=mysql_socket),
-            '--skip-networking',
-        ], checker=lambda: os.path.exists(mysql_socket))
+        return watcher_getter(
+            'mysqld',
+            [
+                '--defaults-file={0}'.format(mysql_defaults_file),
+                '--datadir={mysql_data_dir}'.format(mysql_data_dir=mysql_data_dir),
+                '--pid-file={mysql_pid}'.format(mysql_pid=mysql_pid),
+                '--socket={mysql_socket}'.format(mysql_socket=mysql_socket),
+                '--skip-networking',
+            ],
+            checker=lambda: os.path.exists(mysql_socket),
+            request=request,
+        )
 
 
 @pytest.fixture(scope='session')
