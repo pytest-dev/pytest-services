@@ -68,7 +68,10 @@ Infrastructure fixtures
             return watcher_getter(
                 name='memcached',
                 arguments=['-s', memcached_socket],
-                checker=lambda: os.path.exists(memcached_socket))
+                checker=lambda: os.path.exists(memcached_socket),
+                # Needed for the correct execution order of finalizers
+                request=request,
+            )
 
 * services_log
     Logger used for debug logging when managing test services.
