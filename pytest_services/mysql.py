@@ -120,7 +120,7 @@ def mysql_watcher(
 @pytest.fixture(scope='session')
 def mysql_database_name():
     """Name of test database to be created."""
-    return 'test'
+    return 'pytest_services_test'
 
 
 @pytest.fixture(scope='session')
