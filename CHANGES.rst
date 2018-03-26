@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.3.0
+-----
+
+- Add `request` param to watcher_getter to have proper execution order
+  of finalizers (youtux).
+
 1.2.1
 -----
 

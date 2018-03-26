@@ -91,4 +91,5 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
                 '+extension', 'RANDR'
             ] + listen_args,
             checker=checker,
+            request=request,
         )
