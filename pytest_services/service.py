@@ -1,7 +1,7 @@
 """Service fixtures."""
 import time
 import re
-import warning
+import warnings
 try:
     import subprocess32 as subprocess
 except ImportError:  # pragma: no cover
@@ -60,7 +60,7 @@ def watcher_getter(request, services_log):
     orig_request = request
     def watcher_getter_function(name, arguments=None, kwargs=None, timeout=20, checker=None, request=None):
         if request is None:
-            warning.warn('Omitting the `request` parameter will result in an '
+            warnings.warn('Omitting the `request` parameter will result in an '
                          'unstable order of finalizers.')
             request = orig_request
         executable = find_executable(name)
