@@ -1,11 +1,17 @@
 """Fixtures for supporting a distributed test run."""
 import contextlib
 import errno
-import fcntl
 import json
 import os
 import socket
 import time
+
+try:
+    import fcntl
+except ImportError:
+    class fcntl:
+        LOCK_EX = None
+        LOCK_UN = None
 
 import pytest
 

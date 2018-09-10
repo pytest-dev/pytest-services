@@ -1,12 +1,16 @@
 """Fixtures for the GUI environment."""
 import os
-import fcntl
 import socket
 import re
 try:
     import subprocess32 as subprocess
 except ImportError:  # pragma: no cover
     import subprocess
+
+try:
+    import fcntl
+except ImportError:
+    pass
 
 import pytest
 
