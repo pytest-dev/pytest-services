@@ -16,7 +16,7 @@ def services_log(slave_id):
             handler = logging.handlers.SysLogHandler(
                 facility=logging.handlers.SysLogHandler.LOG_LOCAL7, address='/dev/log', **kwargs)
             break
-        except (IOError, TypeError):
+        except (IOError, TypeError, AttributeError):
             pass
     logger = logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
     logger.setLevel(logging.DEBUG)
