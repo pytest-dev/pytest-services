@@ -38,41 +38,26 @@ def lock_file(filename, content, operation):
     return handle
 
 
-def unlock_file(filename, handle, remove=True):
-    """Unlock given file."""
-    fcntl.flock(handle, fcntl.LOCK_UN)
-    handle.close()
-    if remove:
-        try:
-            os.unlink(filename)
-        except OSError:
-            pass
+
+def try_remove(filename):
+    try:
+        os.unlink(filename)
+    except OSError:
+        pass
 
 
 @contextlib.contextmanager
-def file_lock(filename, operation=fcntl.LOCK_EX, remove=True, timeout=20):
+def file_lock(filename, remove=True, timeout=20):
     """A lock that is shared across processes.
 
     :param filename: the name of the file that will be locked.
-    :pram operation: the lock operation.
 
     """
-    # http://bservices_log.vmfarms.com/2011/03/cross-process-locking-and.html
-    times = 0
-    while True:
-        try:
-            handle = lock_file(filename, None, operation)
-            break
-        except IOError:
-            if times > timeout:
-                raise Exception('Not able to aquire lock file {0} in {1}'.format(filename, timeout))
-            time.sleep(0.5)
-            times += 1
+    with contextlib.closing(zc.lockfile.LockFile(filename)) as lockfile:
+        yield lockfile._fp
 
-    try:
-        yield handle
-    finally:
-        unlock_file(filename, handle, remove=remove)
+
+    remove and try_remove(filename)
 
 
 def unlock_resource(name, resource, lock_dir, services_log):
