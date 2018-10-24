@@ -112,6 +112,7 @@ def locked_resources(name, lock_dir):
         fd.seek(0)
         fd.truncate()
         fd.write(json.dumps(bound_resources))
+        fd.flush()
 
 
 def unlock_port(port, lock_dir, services_log):
