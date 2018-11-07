@@ -50,9 +50,6 @@ def mysql_system_database(
         mysql_install_db = find_executable('mysql_install_db')
         assert mysql_install_db, 'You have to install mysql_install_db script.'
 
-        my_print_defaults = find_executable('my_print_defaults')
-        assert my_print_defaults, 'You have to install my_print_defaults script.'
-
         try:
             services_log.debug('Starting mysql_install_db.')
             check_output([
