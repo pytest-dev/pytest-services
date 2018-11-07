@@ -58,10 +58,10 @@ def watcher_getter(request, services_log):
     Add finalizer to properly stop it.
     """
     orig_request = request
+
     def watcher_getter_function(name, arguments=None, kwargs=None, timeout=20, checker=None, request=None):
         if request is None:
-            warnings.warn('Omitting the `request` parameter will result in an '
-                         'unstable order of finalizers.')
+            warnings.warn('Omitting the `request` parameter will result in an unstable order of finalizers.')
             request = orig_request
         executable = find_executable(name)
         assert executable, 'You have to install {0} executable.'.format(name)
