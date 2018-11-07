@@ -11,6 +11,8 @@ env:
     - TESTENV=coveralls
 install:
   - pip install tox
+# mysql_install_db will not work if it can't find the my-default.cnf file
+before_script: sudo cp /etc/mysql/my.cnf /usr/share/mysql/my-default.cnf
 script: tox -e $TESTENV
 branches:
   except:
