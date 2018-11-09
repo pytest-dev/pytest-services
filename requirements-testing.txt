@@ -4,6 +4,4 @@ mock
 mysqlclient
 pylibmc
 pytest-pep8
-pylama
-pylama_pylint
 astroid

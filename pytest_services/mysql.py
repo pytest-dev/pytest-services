@@ -28,16 +28,27 @@ default-time-zone = SYSTEM
 
 
 @pytest.fixture(scope='session')
-def mysql_system_database(run_services, mysql_data_dir, mysql_defaults_file, memory_temp_dir, lock_dir, services_log):
+def mysql_base_dir():
+    my_print_defaults = find_executable('my_print_defaults')
+    assert my_print_defaults, 'You have to install my_print_defaults script.'
+
+    return os.path.dirname(os.path.dirname(os.path.realpath(my_print_defaults)))
+
+
+@pytest.fixture(scope='session')
+def mysql_system_database(
+        run_services,
+        mysql_data_dir,
+        mysql_base_dir,
+        mysql_defaults_file,
+        memory_temp_dir,
+        lock_dir,
+        services_log,
+):
     """Install database to given path."""
     if run_services:
         mysql_install_db = find_executable('mysql_install_db')
         assert mysql_install_db, 'You have to install mysql_install_db script.'
-
-        my_print_defaults = find_executable('my_print_defaults')
-        assert my_print_defaults, 'You have to install my_print_defaults script.'
-
-        mysql_basedir = os.path.dirname(os.path.dirname(os.path.realpath(my_print_defaults)))
 
         try:
             services_log.debug('Starting mysql_install_db.')
@@ -45,7 +56,7 @@ def mysql_system_database(run_services, mysql_data_dir, mysql_defaults_file, mem
                 mysql_install_db,
                 '--defaults-file={0}'.format(mysql_defaults_file),
                 '--datadir={0}'.format(mysql_data_dir),
-                '--basedir={0}'.format(mysql_basedir),
+                '--basedir={0}'.format(mysql_base_dir),
                 '--user={0}'.format(os.environ['USER'])
             ])
         except CalledProcessWithOutputError as e:

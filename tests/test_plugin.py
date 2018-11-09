@@ -13,7 +13,7 @@ def test_memcached(request, memcached, memcached_socket):
     assert mc.get('some') == 1
 
     # check memcached cleaner
-    request.getfuncargvalue('memcached_clean')
+    request.getfixturevalue('memcached_clean')
     assert mc.get('some') is None
 
 
