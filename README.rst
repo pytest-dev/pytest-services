@@ -41,7 +41,7 @@ Fixtures
 --------
 
 * run_services
-    Determines whethere services should be run or not. False by default if not in distributed environment
+    Determines whether services should be run or not. False by default if not in distributed environment
     (without pytest-xdist_). Can be manually set to True by overriding this fixture in your test config or
     just by using `--run-services` command line argument (see below).
 
