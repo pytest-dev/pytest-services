@@ -5,7 +5,6 @@ import fcntl
 import json
 import os
 import socket
-import time
 
 import pytest
 import zc.lockfile
