@@ -8,6 +8,7 @@ import socket
 import time
 
 import pytest
+import zc.lockfile
 
 marker = object()
 
@@ -53,7 +54,7 @@ def file_lock(filename, remove=True, timeout=20):
     :param filename: the name of the file that will be locked.
 
     """
-    with contextlib.closing(zc.lockfile.LockFile(filename)) as lockfile:
+    with contextlib.closing(zc.lockfile.SimpleLockFile(filename)) as lockfile:
         yield lockfile._fp
 
 

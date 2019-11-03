@@ -19,7 +19,7 @@ install_requires = [
     'requests',
     'psutil',
     'pytest',
-    'zc.lockfile',
+    'zc.lockfile >= 2.0',
 ]
 
 PY2 = sys.version_info[0] < 3
