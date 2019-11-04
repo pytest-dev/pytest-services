@@ -12,10 +12,12 @@ from .process import (
 
 
 @pytest.fixture(scope='session')
-def mysql_defaults_file(run_services, mysql_data_dir, memory_temp_dir):
+def mysql_defaults_file(
+        run_services, tmp_path_factory, memory_temp_dir, request):
     """MySQL defaults file."""
     if run_services:
-        defaults_path = os.path.join(mysql_data_dir, 'defaults.cnf')
+        cfg = tmp_path_factory.mktemp(request.session.name)
+        defaults_path = str(cfg / 'defaults.cnf')
 
         with open(defaults_path, 'w+') as fd:
             fd.write("""
