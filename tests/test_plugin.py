@@ -19,7 +19,7 @@ def test_memcached(request, memcached, memcached_socket):
 
 def test_mysql(mysql, mysql_connection, mysql_socket):
     """Test mysql service."""
-    conn = MySQLdb.connect(unix_socket=mysql_socket)
+    conn = MySQLdb.connect(user='root', unix_socket=mysql_socket)
     assert conn
 
 
