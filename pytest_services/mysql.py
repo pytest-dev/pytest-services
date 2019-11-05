@@ -56,8 +56,8 @@ def mysql_system_database(
             services_log.debug('Starting mysqld.')
             check_output([
                 mysqld,
-                '--initialize',
                 '--defaults-file={0}'.format(mysql_defaults_file),
+                '--initialize-insecure',
                 '--datadir={0}'.format(mysql_data_dir),
                 '--basedir={0}'.format(mysql_base_dir),
                 '--user={0}'.format(os.environ['USER'])
