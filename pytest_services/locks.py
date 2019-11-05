@@ -38,7 +38,6 @@ def lock_file(filename, content, operation):
     return handle
 
 
-
 def try_remove(filename):
     try:
         os.unlink(filename)
@@ -55,7 +54,6 @@ def file_lock(filename, remove=True, timeout=20):
     """
     with contextlib.closing(zc.lockfile.SimpleLockFile(filename)) as lockfile:
         yield lockfile._fp
-
 
     remove and try_remove(filename)
 
