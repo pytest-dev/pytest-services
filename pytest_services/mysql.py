@@ -12,10 +12,12 @@ from .process import (
 
 
 @pytest.fixture(scope='session')
-def mysql_defaults_file(run_services, mysql_data_dir, memory_temp_dir):
+def mysql_defaults_file(
+        run_services, tmp_path_factory, memory_temp_dir, request):
     """MySQL defaults file."""
     if run_services:
-        defaults_path = os.path.join(mysql_data_dir, 'defaults.cnf')
+        cfg = tmp_path_factory.mktemp(request.session.name)
+        defaults_path = str(cfg / 'defaults.cnf')
 
         with open(defaults_path, 'w+') as fd:
             fd.write("""
@@ -47,14 +49,15 @@ def mysql_system_database(
 ):
     """Install database to given path."""
     if run_services:
-        mysql_install_db = find_executable('mysql_install_db')
-        assert mysql_install_db, 'You have to install mysql_install_db script.'
+        mysqld = find_executable('mysqld')
+        assert mysqld, 'You have to install mysqld script.'
 
         try:
-            services_log.debug('Starting mysql_install_db.')
+            services_log.debug('Starting mysqld.')
             check_output([
-                mysql_install_db,
+                mysqld,
                 '--defaults-file={0}'.format(mysql_defaults_file),
+                '--initialize-insecure',
                 '--datadir={0}'.format(mysql_data_dir),
                 '--basedir={0}'.format(mysql_base_dir),
                 '--user={0}'.format(os.environ['USER'])
@@ -65,7 +68,7 @@ def mysql_system_database(
                 'Please ensure you disabled apparmor for /run/shm/** or for whole mysql'.format(e=e))
             raise
         finally:
-            services_log.debug('mysql_install_db was executed.')
+            services_log.debug('mysqld was executed.')
 
 
 @pytest.fixture(scope='session')

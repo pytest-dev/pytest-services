@@ -1,6 +1,17 @@
 Changelog
 =========
 
+2.0.0
+-----
+
+- #23: Rely on ``zc.lockfile`` for lockfile behavior.
+- #28: Fixtures now supports later versions of mysql and no longer
+  support versions of mysql prior to ``mysql --initialize`` support.
+- #29: Fix issues with later versions of mysql where ``mysql_defaults_file``
+  fixture would prevent startup of mysql.
+- Fixed issue in test suite where mysql fixture was not tested.
+- Removed ``pytest_services.locks.lock_file``.
+
 1.3.1
 -----
 

@@ -1,78 +1,33 @@
 """Fixtures for supporting a distributed test run."""
 import contextlib
-import errno
-import fcntl
 import json
 import os
 import socket
-import time
 
 import pytest
+import zc.lockfile
 
 marker = object()
 
 
-def lock_file(filename, content, operation):
-    """Lock given file.
-
-    :param filename: full path to the lockfile
-    :param content: content string to write to the lockfile after successful lock
-    :param operation: os operation to use for lock
-    :return: file object of opened locked file. Can be used to write content to it
-    """
+def try_remove(filename):
     try:
-        handle = os.fdopen(os.open(filename, os.O_RDWR | os.O_CREAT, 0o666), 'r+')
-    except OSError as e:
-        if e.errno == errno.EACCES:
-            raise Exception('Failed to open/create file. Check permissions on containing folder')
-        raise
-    fcntl.flock(handle, operation)
-    if content:
-        handle.write(content)
-    handle.flush()
-    os.fsync(handle.fileno())
-    try:
-        os.chmod(filename, 0o666)
+        os.unlink(filename)
     except OSError:
         pass
-    return handle
-
-
-def unlock_file(filename, handle, remove=True):
-    """Unlock given file."""
-    fcntl.flock(handle, fcntl.LOCK_UN)
-    handle.close()
-    if remove:
-        try:
-            os.unlink(filename)
-        except OSError:
-            pass
 
 
 @contextlib.contextmanager
-def file_lock(filename, operation=fcntl.LOCK_EX, remove=True, timeout=20):
+def file_lock(filename, remove=True, timeout=20):
     """A lock that is shared across processes.
 
     :param filename: the name of the file that will be locked.
-    :pram operation: the lock operation.
 
     """
-    # http://bservices_log.vmfarms.com/2011/03/cross-process-locking-and.html
-    times = 0
-    while True:
-        try:
-            handle = lock_file(filename, None, operation)
-            break
-        except IOError:
-            if times > timeout:
-                raise Exception('Not able to aquire lock file {0} in {1}'.format(filename, timeout))
-            time.sleep(0.5)
-            times += 1
+    with contextlib.closing(zc.lockfile.SimpleLockFile(filename)) as lockfile:
+        yield lockfile._fp
 
-    try:
-        yield handle
-    finally:
-        unlock_file(filename, handle, remove=remove)
+    remove and try_remove(filename)
 
 
 def unlock_resource(name, resource, lock_dir, services_log):

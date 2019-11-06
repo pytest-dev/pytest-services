@@ -1,6 +1,5 @@
 """Fixtures for the GUI environment."""
 import os
-import fcntl
 import socket
 import re
 try:
@@ -71,7 +70,7 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
         listen_args = []
 
     with file_lock(os.path.join(lock_dir, 'xvfb_{0}.lock'.format(xvfb_display)),
-                   operation=fcntl.LOCK_EX | fcntl.LOCK_NB):
+                   ):
 
         def checker():
             try:
