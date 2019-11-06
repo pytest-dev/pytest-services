@@ -1,6 +1,5 @@
 """Fixtures for the GUI environment."""
 import os
-import fcntl
 import socket
 import re
 try:
