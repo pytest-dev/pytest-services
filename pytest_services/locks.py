@@ -1,7 +1,5 @@
 """Fixtures for supporting a distributed test run."""
 import contextlib
-import errno
-import fcntl
 import json
 import os
 import socket
@@ -10,32 +8,6 @@ import pytest
 import zc.lockfile
 
 marker = object()
-
-
-def lock_file(filename, content, operation):
-    """Lock given file.
-
-    :param filename: full path to the lockfile
-    :param content: content string to write to the lockfile after successful lock
-    :param operation: os operation to use for lock
-    :return: file object of opened locked file. Can be used to write content to it
-    """
-    try:
-        handle = os.fdopen(os.open(filename, os.O_RDWR | os.O_CREAT, 0o666), 'r+')
-    except OSError as e:
-        if e.errno == errno.EACCES:
-            raise Exception('Failed to open/create file. Check permissions on containing folder')
-        raise
-    fcntl.flock(handle, operation)
-    if content:
-        handle.write(content)
-    handle.flush()
-    os.fsync(handle.fileno())
-    try:
-        os.chmod(filename, 0o666)
-    except OSError:
-        pass
-    return handle
 
 
 def try_remove(filename):

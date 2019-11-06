@@ -10,6 +10,7 @@ Changelog
 - #29: Fix issues with later versions of mysql where ``mysql_defaults_file``
   fixture would prevent startup of mysql.
 - Fixed issue in test suite where mysql fixture was not tested.
+- Removed ``pytest_services.locks.lock_file``.
 
 1.3.1
 -----
