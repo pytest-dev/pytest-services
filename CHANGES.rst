@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.0.1
+-----
+
+- #20: Added workaround for issue with SysLogHandler.
+
 2.0.0
 -----
 
