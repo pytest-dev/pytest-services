@@ -20,10 +20,19 @@ def services_log(slave_id):
             pass
     logger = logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
     logger.setLevel(logging.DEBUG)
-    if handler:
+    if handler and workaround_issue_20(handler):
         logger.propagate = 0
         logger.addHandler(handler)
     return logger
+
+
+def workaround_issue_20(handler):
+    """
+    Workaround for
+    https://github.com/pytest-dev/pytest-services/issues/20,
+    disabling installation of a broken handler.
+    """
+    return hasattr(handler, 'socket')
 
 
 @contextlib.contextmanager
