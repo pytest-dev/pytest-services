@@ -48,9 +48,10 @@ Fixtures
 Infrastructure fixtures
 ***********************
 
-* slave_id
-    Id of the slave if tests are run using pytest-xdist_. It is set to `local` if tests are not run using
+* worker_id
+    Id of the worker if tests are run using pytest-xdist_. It is set to `local` if tests are not run using
     pytest-xdist_ (with `--dist` command line option set to `load`).
+    Has a deprecated alias ``slave_id`` which will be removed in a future version.
 * session_id
     Test session id. Globally unique, and of course also guaranteed to be different for potentially multiple test
     sessions running on same test node via pytest-xdist_.

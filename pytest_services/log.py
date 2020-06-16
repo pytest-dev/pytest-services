@@ -8,8 +8,8 @@ import pytest
 
 
 @pytest.fixture(scope='session')
-def services_log(slave_id):
-    """A services_logger with the slave id."""
+def services_log(worker_id):
+    """A services_logger with the worker id."""
     handler = None
     for kwargs in (dict(socktype=socket.SOCK_RAW), dict(socktype=socket.SOCK_STREAM), dict()):
         try:
@@ -18,7 +18,7 @@ def services_log(slave_id):
             break
         except (IOError, TypeError):
             pass
-    logger = logging.getLogger('[{slave_id}] {name}'.format(name=__name__, slave_id=slave_id))
+    logger = logging.getLogger('[{worker_id}] {name}'.format(name=__name__, worker_id=worker_id))
     logger.setLevel(logging.DEBUG)
     if handler and workaround_issue_20(handler):
         logger.propagate = 0
