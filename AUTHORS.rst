@@ -11,3 +11,4 @@ These people have contributed to `pytest-services`, in alphabetical order:
 * `Jason R. Coombs <jaraco@jaraco.com>`_
 * `Joep van Dijken <joepvandijken@github.com>`_
 * `Oleg Pidsadnyi <oleg.pidsadnyi@gmail.com>`_
+* `Zac Hatfield-Dodds <zac@zhd.dev>`_

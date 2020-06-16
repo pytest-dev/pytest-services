@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.0
+-----
+
+- #34: Deprecated ``slave_id`` fixture in favor of ``worker_id``,
+  for compatibility with ``pytest-xdist`` 2.
+
 2.0.1
 -----
 
