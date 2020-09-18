@@ -82,18 +82,24 @@ def unlock_display(display, lock_dir, services_log):
 
 def lock_resource(name, resource_getter, lock_dir, services_log):
     """Issue a lock for given resource."""
-    with locked_resources(name, lock_dir) as bound_resources:
-        services_log.debug('bound_resources {0}: {1}'.format(name, bound_resources))
-
-        resource = resource_getter(bound_resources)
-        while resource in bound_resources:
-            # resource is already taken by someone, retry
-            services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
-            resource = resource_getter(bound_resources)
-        services_log.debug('free resource choosen {0}: {1}'.format(name, resource))
-        bound_resources.append(resource)
-        services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
-        return resource
+    max_attempts = 10
+    attempts = 0
+    while attempts <= max_attempts:
+        try:
+            attempts += 1
+            with locked_resources(name, lock_dir) as bound_resources:
+                services_log.debug('bound_resources {0}: {1}'.format(name, bound_resources))
+                resource = resource_getter(bound_resources)
+                while resource in bound_resources:
+                    # resource is already taken by someone, retry
+                    services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
+                    resource = resource_getter(bound_resources)
+                services_log.debug('free resource choosen {0}: {1}'.format(name, resource))
+                bound_resources.append(resource)
+                services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
+                return resource
+        except zc.lockfile.LockError as err:
+            services_log.debug('lock resource attempt {0} failed: {1}'.format(attempts, err))
 
 
 def get_free_port(lock_dir, services_log):
