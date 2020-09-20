@@ -165,11 +165,11 @@ def port_getter(request, lock_dir, services_log, lock_resource_timeout):
 
 
 @pytest.fixture(scope='session')
-def display_getter(request, lock_dir, services_log):
+def display_getter(request, lock_dir, services_log, lock_resource_timeout):
     """Display getter function."""
     def get_display():
         """Lock a free display and unlock it on finalizer."""
-        display = get_free_display(lock_dir, services_log)
+        display = get_free_display(lock_dir, services_log, lock_resource_timeout)
         request.addfinalizer(lambda: unlock_display(display, lock_dir, services_log))
         return display
     return get_display
