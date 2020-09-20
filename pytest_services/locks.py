@@ -2,7 +2,9 @@
 import contextlib
 import json
 import os
+from random import random
 import socket
+import time
 
 import pytest
 import zc.lockfile
@@ -80,13 +82,17 @@ def unlock_display(display, lock_dir, services_log):
     return unlock_resource('display', display, lock_dir, services_log)
 
 
-def lock_resource(name, resource_getter, lock_dir, services_log):
+@pytest.fixture(scope='session')
+def lock_resource_timeout():
+    """Max number of seconds to lock resource."""
+    return 2
+
+
+def lock_resource(name, resource_getter, lock_dir, services_log, lock_resource_timeout):
     """Issue a lock for given resource."""
-    max_attempts = 10
-    attempts = 0
-    while attempts <= max_attempts:
+    total_seconds_slept = 0
+    while True:
         try:
-            attempts += 1
             with locked_resources(name, lock_dir) as bound_resources:
                 services_log.debug('bound_resources {0}: {1}'.format(name, bound_resources))
                 resource = resource_getter(bound_resources)
@@ -99,10 +105,16 @@ def lock_resource(name, resource_getter, lock_dir, services_log):
                 services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
                 return resource
         except zc.lockfile.LockError as err:
-            services_log.debug('lock resource attempt {0} failed: {1}'.format(attempts, err))
+            if total_seconds_slept >= lock_resource_timeout:
+                raise err
+            services_log.debug('lock resource failed: {0}'.format(err))
+
+        seconds_to_sleep = random() * 0.1 + 0.05
+        total_seconds_slept += seconds_to_sleep
+        time.sleep(seconds_to_sleep)
 
 
-def get_free_port(lock_dir, services_log):
+def get_free_port(lock_dir, services_log, lock_resource_timeout):
     """Get free port to listen on."""
     def get_port(bound_resources):
         if bound_resources:
@@ -120,10 +132,10 @@ def get_free_port(lock_dir, services_log):
                 pass
             port += 1
 
-    return lock_resource('port', get_port, lock_dir, services_log)
+    return lock_resource('port', get_port, lock_dir, services_log, lock_resource_timeout)
 
 
-def get_free_display(lock_dir, services_log):
+def get_free_display(lock_dir, services_log, lock_resource_timeout):
     """Get free display to listen on."""
     def get_display(bound_resources):
         display = 100
@@ -135,15 +147,15 @@ def get_free_display(lock_dir, services_log):
                 continue
             return display
 
-    return lock_resource('display', get_display, lock_dir, services_log)
+    return lock_resource('display', get_display, lock_dir, services_log, lock_resource_timeout)
 
 
 @pytest.fixture(scope='session')
-def port_getter(request, lock_dir, services_log):
+def port_getter(request, lock_dir, services_log, lock_resource_timeout):
     """Lock getter function."""
     def get_port():
         """Lock a free port and unlock it on finalizer."""
-        port = get_free_port(lock_dir, services_log)
+        port = get_free_port(lock_dir, services_log, lock_resource_timeout)
 
         def finalize():
             unlock_port(port, lock_dir, services_log)

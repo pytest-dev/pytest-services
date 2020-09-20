@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.1
+-----
+
+- #38: Retry to lock resource if zc.lockfile.LockError is raised. Fix needed for pytest-xdist.
+
 2.1.0
 -----
 
