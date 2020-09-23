@@ -84,8 +84,8 @@ def unlock_display(display, lock_dir, services_log):
 
 @pytest.fixture(scope='session')
 def lock_resource_timeout():
-    """Max number of seconds to lock resource."""
-    return 2
+    """Max number of seconds to obtain the lock."""
+    return 20
 
 
 def lock_resource(name, resource_getter, lock_dir, services_log, lock_resource_timeout):
