@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+-----
+
+- #38: Retry to lock resource if zc.lockfile.LockError is raised. Fix needed for pytest-xdist. (StabbarN)
+
 2.1.0
 -----
 

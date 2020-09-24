@@ -115,7 +115,9 @@ Infrastructure fixtures
 * display_getter
     Function to get unallocated display.
     Automatically ensures locking and un-locking of it on application level via flock.
-
+* lock_resource_timeout
+    Used in function lock_resource.
+    A maximum of total sleep between attempts to lock resource.
 
 Service fixtures
 ****************
