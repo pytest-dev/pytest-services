@@ -2,15 +2,15 @@
 import codecs
 import os
 import sys
+import re
 
 from setuptools import setup
-
-import pytest_services
 
 dirname = os.path.dirname(__file__)
 
 long_description = (
     codecs.open(os.path.join(dirname, 'README.rst'), encoding='utf-8').read() + '\n' +
+    codecs.open(os.path.join(dirname, 'AUTHORS.rst'), encoding='utf-8').read() + '\n' +
     codecs.open(os.path.join(dirname, 'CHANGES.rst'), encoding='utf-8').read()
 )
 
@@ -27,6 +27,9 @@ PY2 = sys.version_info[0] < 3
 if PY2:
     install_requires.append('subprocess32')
 
+with codecs.open(os.path.join(dirname, "pytest_services", "__init__.py"), encoding="utf-8") as fd:
+    VERSION = re.compile(r".*__version__ = ['\"](.*?)['\"]", re.S).match(fd.read()).group(1)
+
 
 setup(
     name='pytest-services',
@@ -35,7 +38,7 @@ setup(
     author='Anatoly Bubenkov, Paylogic International and others',
     license='MIT license',
     author_email='bubenkoff@gmail.com',
-    version=pytest_services.__version__,
+    version=VERSION,
     url='https://github.com/pytest-dev/pytest-services',
     install_requires=install_requires,
     extras={
