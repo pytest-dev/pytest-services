@@ -12,4 +12,4 @@ These people have contributed to `pytest-services`, in alphabetical order:
 * `Joep van Dijken <joepvandijken@github.com>`_
 * `Oleg Pidsadnyi <oleg.pidsadnyi@gmail.com>`_
 * `Zac Hatfield-Dodds <zac@zhd.dev>`_
-.. * `Magnus Staberg <magnus@staberg.io>`_
+* `Magnus Staberg <magnus@staberg.io>`_
