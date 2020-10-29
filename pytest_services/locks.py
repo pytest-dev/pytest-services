@@ -24,10 +24,21 @@ def file_lock(filename, remove=True, timeout=20):
     """A lock that is shared across processes.
 
     :param filename: the name of the file that will be locked.
-
+    :param remove: whether or not to remove the file on context close
+    :param timeout: Amount of time to retry the file lock if a :class:`zc.lockfile.LockError` is hit
     """
-    with contextlib.closing(zc.lockfile.SimpleLockFile(filename)) as lockfile:
-        yield lockfile._fp
+    total_seconds_slept = 0
+    while True:
+        try:
+            with contextlib.closing(zc.lockfile.SimpleLockFile(filename)) as lockfile:
+                yield lockfile._fp
+                break
+        except zc.lockfile.LockError as err:
+            if total_seconds_slept >= timeout:
+                raise err
+        seconds_to_sleep = random() * 0.1 + 0.05
+        total_seconds_slept += seconds_to_sleep
+        time.sleep(seconds_to_sleep)
 
     remove and try_remove(filename)
 
