@@ -10,6 +10,7 @@ These people have contributed to `pytest-services`, in alphabetical order:
 * `Dmitrijs Milajevs <dimazest@gmail.com>`_
 * `Jason R. Coombs <jaraco@jaraco.com>`_
 * `Joep van Dijken <joepvandijken@github.com>`_
+* `Magnus Staberg <magnus@staberg.io>`_
+* `Michael Shriver <mshriver@redhat.com>`_
 * `Oleg Pidsadnyi <oleg.pidsadnyi@gmail.com>`_
 * `Zac Hatfield-Dodds <zac@zhd.dev>`_
-* `Magnus Staberg <magnus@staberg.io>`_

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+-----
+
+- #42: Retry on ``zc.lockfile.LockError`` in ``file_lock``, use existing timeout kwarg
+
 2.2.0
 -----
 
