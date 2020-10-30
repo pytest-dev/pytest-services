@@ -1,10 +1,10 @@
 Changelog
 =========
 
-Unreleased
+2.2.1
 -----
 
-- #42: Retry on ``zc.lockfile.LockError`` in ``file_lock``, use existing timeout kwarg
+- #42: Retry on ``zc.lockfile.LockError`` in ``file_lock``, use existing timeout kwarg (mshriver)
 
 2.2.0
 -----
