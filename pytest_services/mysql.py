@@ -2,7 +2,6 @@
 import os
 import shutil
 
-from distutils.spawn import find_executable  # pylint: disable=E0611
 import pytest
 
 from .process import (
@@ -31,7 +30,7 @@ default-time-zone = SYSTEM
 
 @pytest.fixture(scope='session')
 def mysql_base_dir():
-    my_print_defaults = find_executable('my_print_defaults')
+    my_print_defaults = shutil.which('my_print_defaults')
     assert my_print_defaults, 'You have to install my_print_defaults script.'
 
     return os.path.dirname(os.path.dirname(os.path.realpath(my_print_defaults)))

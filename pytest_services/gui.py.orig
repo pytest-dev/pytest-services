@@ -7,7 +7,7 @@ import socket
 import shlex
 import subprocess32
 
-from distutils.spawn import find_executable
+from shutil import which
 import pytest
 
 from tests.fixtures.services.util import (
@@ -70,7 +70,7 @@ def xvfb_watcher(
         with file_lock(
                 os.path.join(lock_dir, 'xvfb_{0}.lock'.format(display)),
                 operation=fcntl.LOCK_EX | fcntl.LOCK_NB):
-            xvfb = find_executable('Xvfb')
+            xvfb = which('Xvfb')
             assert xvfb, 'You have to have Xvfb installed'
             cmd = (
                 '{xvfb} '
