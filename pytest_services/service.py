@@ -8,7 +8,7 @@ except ImportError:  # pragma: no cover
     import subprocess
 import uuid  # pylint: disable=C0411
 
-from distutils.spawn import find_executable  # pylint: disable=E0611
+from shutil import which
 import pytest
 
 WRONG_FILE_NAME_CHARS_RE = re.compile(r'[^\w_-]')
@@ -70,7 +70,7 @@ def watcher_getter(request, services_log):
         if request is None:
             warnings.warn('Omitting the `request` parameter will result in an unstable order of finalizers.')
             request = orig_request
-        executable = find_executable(name)
+        executable = which(name)
         assert executable, 'You have to install {0} executable.'.format(name)
 
         cmd = [name] + (arguments or [])
