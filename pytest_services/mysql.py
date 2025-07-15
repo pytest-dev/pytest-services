@@ -1,8 +1,8 @@
 """Fixtures for mysql."""
 import os
 import shutil
+from textwrap import dedent
 
-from distutils.spawn import find_executable  # pylint: disable=E0611
 import pytest
 
 from .process import (
@@ -16,22 +16,28 @@ def mysql_defaults_file(
         run_services, tmp_path_factory, memory_temp_dir, request):
     """MySQL defaults file."""
     if run_services:
-        cfg = tmp_path_factory.mktemp(request.session.name)
+        cfg = tmp_path_factory.mktemp("pytest-services")
         defaults_path = str(cfg / 'defaults.cnf')
 
         with open(defaults_path, 'w+') as fd:
-            fd.write("""
-[mysqld]
-user = {user}
-tmpdir = {tmpdir}
-default-time-zone = SYSTEM
-    """.format(user=os.environ['USER'], tmpdir=memory_temp_dir))
+            user = os.environ["USER"]
+            fd.write(
+                dedent(
+                    f"""
+                    [mysqld]
+                    user = {user}
+                    tmpdir = {memory_temp_dir}
+                    default-time-zone = SYSTEM
+                    """
+                )
+            )
         return defaults_path
+    return None
 
 
 @pytest.fixture(scope='session')
 def mysql_base_dir():
-    my_print_defaults = find_executable('my_print_defaults')
+    my_print_defaults = shutil.which('my_print_defaults')
     assert my_print_defaults, 'You have to install my_print_defaults script.'
 
     return os.path.dirname(os.path.dirname(os.path.realpath(my_print_defaults)))
@@ -49,7 +55,7 @@ def mysql_system_database(
 ):
     """Install database to given path."""
     if run_services:
-        mysqld = find_executable('mysqld')
+        mysqld = shutil.which('mysqld')
         assert mysqld, 'You have to install mysqld script.'
 
         try:
