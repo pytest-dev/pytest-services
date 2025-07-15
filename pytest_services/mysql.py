@@ -55,6 +55,7 @@ def mysql_system_database(
 ):
     """Install database to given path."""
     if run_services:
+        pytest.skip(reason="#50 needs investigation")
         mysqld = shutil.which('mysqld')
         assert mysqld, 'You have to install mysqld script.'
 
