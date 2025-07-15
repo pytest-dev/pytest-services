@@ -21,10 +21,6 @@ install_requires = [
     'zc.lockfile >= 2.0',
 ]
 
-PY2 = sys.version_info[0] < 3
-
-if PY2:
-    install_requires.append('subprocess32')
 
 with codecs.open(os.path.join(dirname, "pytest_services", "__init__.py"), encoding="utf-8") as fd:
     VERSION = re.compile(r".*__version__ = ['\"](.*?)['\"]", re.S).match(fd.read()).group(1)
@@ -40,10 +36,11 @@ setup(
     author_email='bubenkoff@gmail.com',
     version=VERSION,
     url='https://github.com/pytest-dev/pytest-services',
-    install_requires=install_requires,
     extras={
         'memcached': ['pylibmc'],
     },
+    python_requires=">=3.9",
+    install_requires=install_requires,
     classifiers=[
         'Development Status :: 6 - Mature',
         'Intended Audience :: Developers',
@@ -56,7 +53,13 @@ setup(
         'Topic :: Utilities',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
-    ] + [('Programming Language :: Python :: %s' % x) for x in '2.7 3.4 3.5 3.6 3.7'.split()],
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
+    ],
     tests_require=['tox'],
     entry_points={'pytest11': [
         'pytest-services=pytest_services.plugin',

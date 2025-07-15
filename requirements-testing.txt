@@ -1,6 +1,4 @@
 # apt-get install xvfb python-dev libmemcached-dev libmysqlclient-dev
-coverage
 mysqlclient
 pylibmc
-pytest-pep8
 astroid
