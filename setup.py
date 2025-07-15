@@ -34,6 +34,7 @@ setup(
     name='pytest-services',
     description='Services plugin for pytest testing framework',
     long_description=long_description,
+    long_description_content_type="text/x-rst",
     author='Anatoly Bubenkov, Paylogic International and others',
     license='MIT license',
     author_email='bubenkoff@gmail.com',
