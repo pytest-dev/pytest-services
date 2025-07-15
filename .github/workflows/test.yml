@@ -31,13 +31,12 @@ jobs:
   test:
     needs: [package]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         python: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-        os: [ubuntu-latest, windows-latest]        
 
     steps:
     - uses: actions/checkout@v4
@@ -53,6 +52,11 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
         allow-prereleases: true
+
+    - name: System dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install xvfb python3-dev libmemcached-dev libmysqlclient-dev memcached libmemcached-tools 
 
     - name: Install tox
       run: |

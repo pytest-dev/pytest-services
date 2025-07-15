@@ -1,4 +1,3 @@
-# apt-get install xvfb python-dev libmemcached-dev libmysqlclient-dev
 mysqlclient
 pylibmc
 astroid
