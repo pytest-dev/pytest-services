@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.2.2
+-----
+
+- #47: Replace ``distutils.spawn.find_executable`` with ``shutil.which``. The package ``distutils`` is deprecated.
+
 2.2.1
 -----
 
