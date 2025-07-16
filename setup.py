@@ -22,19 +22,14 @@ install_requires = [
 ]
 
 
-with codecs.open(os.path.join(dirname, "pytest_services", "__init__.py"), encoding="utf-8") as fd:
-    VERSION = re.compile(r".*__version__ = ['\"](.*?)['\"]", re.S).match(fd.read()).group(1)
-
-
 setup(
     name='pytest-services',
     description='Services plugin for pytest testing framework',
     long_description=long_description,
     long_description_content_type="text/x-rst",
     author='Anatoly Bubenkov, Paylogic International and others',
-    license='MIT license',
+    license='MIT',
     author_email='bubenkoff@gmail.com',
-    version=VERSION,
     url='https://github.com/pytest-dev/pytest-services',
     extras={
         'memcached': ['pylibmc'],
@@ -44,7 +39,6 @@ setup(
     classifiers=[
         'Development Status :: 6 - Mature',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
         'Operating System :: POSIX',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: MacOS :: MacOS X',
