@@ -1,17 +1,13 @@
 """Setuptools entry point."""
-import codecs
-import os
-import sys
-import re
-
 from setuptools import setup
+from pathlib import Path
 
-dirname = os.path.dirname(__file__)
+dirname = Path(__file__).parent
 
 long_description = (
-    codecs.open(os.path.join(dirname, 'README.rst'), encoding='utf-8').read() + '\n' +
-    codecs.open(os.path.join(dirname, 'AUTHORS.rst'), encoding='utf-8').read() + '\n' +
-    codecs.open(os.path.join(dirname, 'CHANGES.rst'), encoding='utf-8').read()
+    dirname.joinpath('README.rst').read_text(encoding="UTF-8") + '\n' +
+    dirname.joinpath('AUTHORS.rst').read_text(encoding="UTF-8") + '\n' +
+    dirname.joinpath('CHANGES.rst').read_text(encoding="UTF-8")
 )
 
 install_requires = [
