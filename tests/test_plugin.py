@@ -2,12 +2,11 @@
 import os.path
 import socket
 
-import pylibmc
-import MySQLdb
-
 
 def test_memcached(request, memcached, memcached_socket):
     """Test memcached service."""
+    import pylibmc
+
     mc = pylibmc.Client([memcached_socket])
     mc.set('some', 1)
     assert mc.get('some') == 1
@@ -19,6 +18,8 @@ def test_memcached(request, memcached, memcached_socket):
 
 def test_mysql(mysql, mysql_connection, mysql_socket):
     """Test mysql service."""
+    import MySQLdb
+
     conn = MySQLdb.connect(user='root', unix_socket=mysql_socket)
     assert conn
 
