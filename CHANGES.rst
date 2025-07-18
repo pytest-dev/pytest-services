@@ -1,6 +1,11 @@
 Changelog
 =========
 
+UNRELEASED
+----------
+
+- #52: Move ``pylibmc`` and ``MySQLdb`` library imports to specific tests -- this makes it easier to test a subset of the ``pytest-services`` package  without having to install all the dependencies.
+
 2.2.2
 -----
 
