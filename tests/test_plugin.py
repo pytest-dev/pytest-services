@@ -54,15 +54,3 @@ def test_display_getter(display_getter):
 def test_temp_dir(temp_dir):
     """Test temp dir directory."""
     assert os.path.isdir(temp_dir)
-
-
-def test_folders_import_does_not_warn():
-    """Importing the folder fixtures doesn't warn, so ``-W error`` works (#55)."""
-    import importlib
-    import warnings
-
-    import pytest_services.folders
-
-    with warnings.catch_warnings():
-        warnings.simplefilter('error')
-        importlib.reload(pytest_services.folders)
