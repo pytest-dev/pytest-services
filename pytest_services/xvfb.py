@@ -46,7 +46,7 @@ def xvfb_display(request, run_services, lock_dir, services_log, display_getter):
             display = request.config.option.display
         else:
             display = display_getter()
-        os.environ['DISPLAY'] = ':{0}'.format(display) if ':' not in str(display) else display
+        os.environ['DISPLAY'] = f':{display}' if ':' not in str(display) else display
 
         return display
 
@@ -69,19 +69,19 @@ def xvfb(request, run_services, xvfb_display, lock_dir, xvfb_resolution, watcher
     else:
         listen_args = []
 
-    with file_lock(os.path.join(lock_dir, 'xvfb_{0}.lock'.format(xvfb_display)),
+    with file_lock(os.path.join(lock_dir, f'xvfb_{xvfb_display}.lock'),
                    ):
 
         def checker():
             try:
                 socket.create_connection(('127.0.0.1', 6000 + xvfb_display))
                 return True
-            except socket.error:
+            except OSError:
                 pass
 
         return watcher_getter(
             'Xvfb', [
-                ':{display}'.format(display=xvfb_display),
+                f':{xvfb_display}',
                 '-screen',
                 '0',
                 'x'.join(str(value) for value in xvfb_resolution),

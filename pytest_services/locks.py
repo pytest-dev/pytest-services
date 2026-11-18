@@ -55,8 +55,8 @@ def unlock_resource(name, resource, lock_dir, services_log):
             bound_resources.remove(resource)
         except ValueError:
             pass
-        services_log.debug('resource freed {0}: {1}'.format(name, resource))
-        services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
+        services_log.debug(f'resource freed {name}: {resource}')
+        services_log.debug(f'bound resources {name}: {bound_resources}')
 
 
 @contextlib.contextmanager
@@ -105,20 +105,20 @@ def lock_resource(name, resource_getter, lock_dir, services_log, lock_resource_t
     while True:
         try:
             with locked_resources(name, lock_dir) as bound_resources:
-                services_log.debug('bound_resources {0}: {1}'.format(name, bound_resources))
+                services_log.debug(f'bound_resources {name}: {bound_resources}')
                 resource = resource_getter(bound_resources)
                 while resource in bound_resources:
                     # resource is already taken by someone, retry
-                    services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
+                    services_log.debug(f'bound resources {name}: {bound_resources}')
                     resource = resource_getter(bound_resources)
-                services_log.debug('free resource choosen {0}: {1}'.format(name, resource))
+                services_log.debug(f'free resource choosen {name}: {resource}')
                 bound_resources.append(resource)
-                services_log.debug('bound resources {0}: {1}'.format(name, bound_resources))
+                services_log.debug(f'bound resources {name}: {bound_resources}')
                 return resource
         except zc.lockfile.LockError as err:
             if total_seconds_slept >= lock_resource_timeout:
                 raise err
-            services_log.debug('lock resource failed: {0}'.format(err))
+            services_log.debug(f'lock resource failed: {err}')
 
         seconds_to_sleep = random() * 0.1 + 0.05
         total_seconds_slept += seconds_to_sleep
@@ -139,7 +139,7 @@ def get_free_port(lock_dir, services_log, lock_resource_timeout):
                 s.bind(('127.0.0.1', port))
                 s.close()
                 return port
-            except socket.error:
+            except OSError:
                 pass
             port += 1
 
@@ -153,7 +153,7 @@ def get_free_display(lock_dir, services_log, lock_resource_timeout):
         while True:
             if bound_resources:
                 display = max(bound_resources) + 1
-            if os.path.exists('/tmp/.X{0}-lock'.format(display)):
+            if os.path.exists(f'/tmp/.X{display}-lock'):
                 display += 1
                 continue
             return display
