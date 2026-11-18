@@ -27,7 +27,7 @@ setup(
     license='MIT',
     author_email='bubenkoff@gmail.com',
     url='https://github.com/pytest-dev/pytest-services',
-    extras={
+    extras_require={
         'memcached': ['pylibmc'],
     },
     python_requires=">=3.11",
