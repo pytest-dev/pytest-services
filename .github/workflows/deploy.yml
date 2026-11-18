@@ -20,7 +20,7 @@ jobs:
       SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.inputs.version }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: Build and Check Package
       uses: hynek/build-and-inspect-python-package@v3.0.2
@@ -38,10 +38,10 @@ jobs:
       pull-requests: write  # For merging the release PR.
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: Download Package
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         name: Packages
         path: dist
@@ -59,7 +59,7 @@ jobs:
         git push origin v${{ github.event.inputs.version }}
 
     - name: GitHub Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         files: dist/*
         tag_name: v${{ github.event.inputs.version }}
