@@ -71,11 +71,11 @@ def watcher_getter(request, services_log):
             warnings.warn('Omitting the `request` parameter will result in an unstable order of finalizers.')
             request = orig_request
         executable = which(name)
-        assert executable, 'You have to install {0} executable.'.format(name)
+        assert executable, f'You have to install {name} executable.'
 
         cmd = [name] + (arguments or [])
 
-        services_log.debug('Starting {0}: {1}'.format(name, arguments))
+        services_log.debug(f'Starting {name}: {arguments}')
 
         watcher = subprocess.Popen(
             cmd, **(kwargs or {}))
@@ -97,10 +97,10 @@ def watcher_getter(request, services_log):
         times = 0
         while not checker():
             if watcher.returncode is not None:
-                raise Exception("Error running {0}".format(name))
+                raise Exception(f"Error running {name}")
 
             if times > timeout:
-                raise Exception('The {0} service checked did not succeed!'.format(name))
+                raise Exception(f'The {name} service checked did not succeed!')
 
             time.sleep(1)
             times += 1

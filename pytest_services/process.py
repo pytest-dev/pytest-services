@@ -37,12 +37,12 @@ class CalledProcessWithOutputError(subprocess.CalledProcessError):
 
     def __init__(self, returncode, cmd, output, err):
         """Assign output and error."""
-        super(CalledProcessWithOutputError, self).__init__(returncode, cmd)
+        super().__init__(returncode, cmd)
 
         self.output = output
         self.err = err
 
     def __str__(self):
         """str representation."""
-        return super(CalledProcessWithOutputError, self).__str__() + ' with output: {0} and error: {1}'.format(
+        return super().__str__() + ' with output: {} and error: {}'.format(
             self.output, self.err)

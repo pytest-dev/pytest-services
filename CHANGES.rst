@@ -4,6 +4,8 @@ Changelog
 UNRELEASED
 ----------
 
+- Dropped support for Python 3.9 and 3.10; Python 3.11+ is now required.
+- Added official support for Python 3.15.
 - #55: Use ``pytest.fixture`` instead of the deprecated ``pytest.yield_fixture``, which warns with ``PytestRemovedIn10Warning`` on pytest 9.
 - #52: Move ``pylibmc`` and ``MySQLdb`` library imports to specific tests -- this makes it easier to test a subset of the ``pytest-services`` package  without having to install all the dependencies.
 

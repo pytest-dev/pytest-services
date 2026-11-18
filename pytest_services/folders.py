@@ -20,14 +20,14 @@ def base_dir(request, session_id, root_dir, services_log):
     after themselves.
 
     """
-    path = os.path.join(root_dir, 'sr-{0}'.format(session_id))
-    services_log.debug('creating base dir: {0}'.format(path))
+    path = os.path.join(root_dir, f'sr-{session_id}')
+    services_log.debug(f'creating base dir: {path}')
     if not os.path.exists(path):
         os.mkdir(path)
 
     yield path
 
-    services_log.debug('finalizing base dir: {0}'.format(path))
+    services_log.debug(f'finalizing base dir: {path}')
     shutil.rmtree(path, ignore_errors=True)
 
 
@@ -36,7 +36,7 @@ def temp_dir(request, base_dir, services_log):
     """The temporary dir."""
     path = os.path.join(base_dir, 'tmp')
 
-    services_log.debug('creating temp dir: {0}'.format(path))
+    services_log.debug(f'creating temp dir: {path}')
     if not os.path.exists(path):
         os.mkdir(path)
 
@@ -60,15 +60,15 @@ def memory_base_dir(request, session_id, memory_root_dir, services_log):
     after themselves.
 
     """
-    path = os.path.join(memory_root_dir, 'sr-{0}'.format(session_id))
+    path = os.path.join(memory_root_dir, f'sr-{session_id}')
 
-    services_log.debug('creating memory base dir: {0}'.format(path))
+    services_log.debug(f'creating memory base dir: {path}')
     if not os.path.exists(path):
         os.mkdir(path)
 
     yield path
 
-    services_log.debug('finalizing memory base dir: {0}'.format(path))
+    services_log.debug(f'finalizing memory base dir: {path}')
     shutil.rmtree(path, ignore_errors=True)
 
 
@@ -77,7 +77,7 @@ def memory_temp_dir(request, memory_base_dir, services_log):
     """The memory temporary dir."""
     path = os.path.join(memory_base_dir, 'tmp')
 
-    services_log.debug('creating memory temp dir: {0}'.format(path))
+    services_log.debug(f'creating memory temp dir: {path}')
     if not os.path.exists(path):
         os.mkdir(path)
 
@@ -88,7 +88,7 @@ def memory_temp_dir(request, memory_base_dir, services_log):
 def lock_dir(memory_root_dir, services_log):
     """The lock dir."""
     path = os.path.join(memory_root_dir, 'service-locks')
-    services_log.debug('ensuring lock dir: {0}'.format(path))
+    services_log.debug(f'ensuring lock dir: {path}')
     if not os.path.exists(path):
         try:
             os.mkdir(path, 0o777)
@@ -108,7 +108,7 @@ def lock_dir(memory_root_dir, services_log):
 def run_dir(memory_temp_dir, services_log):
     """The run dir (like local /var/run)."""
     path = os.path.join(memory_temp_dir, 'run')
-    services_log.debug('creating run dir: {0}'.format(path))
+    services_log.debug(f'creating run dir: {path}')
     os.mkdir(path)
 
     return path

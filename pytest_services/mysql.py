@@ -63,11 +63,11 @@ def mysql_system_database(
             services_log.debug('Starting mysqld.')
             check_output([
                 mysqld,
-                '--defaults-file={0}'.format(mysql_defaults_file),
+                f'--defaults-file={mysql_defaults_file}',
                 '--initialize-insecure',
-                '--datadir={0}'.format(mysql_data_dir),
-                '--basedir={0}'.format(mysql_base_dir),
-                '--user={0}'.format(os.environ['USER'])
+                f'--datadir={mysql_data_dir}',
+                f'--basedir={mysql_base_dir}',
+                '--user={}'.format(os.environ['USER'])
             ])
         except CalledProcessWithOutputError as e:
             services_log.error(
@@ -88,7 +88,7 @@ def mysql_data_dir(
     """
     if run_services:
         path = os.path.join(memory_base_dir, 'mysql')
-        services_log.debug('Making mysql base dir in {path}'.format(path=path))
+        services_log.debug(f'Making mysql base dir in {path}')
 
         def finalizer():
             shutil.rmtree(path, ignore_errors=True)
@@ -115,7 +115,7 @@ def mysql_pid(run_dir):
 def mysql_connection(run_services, mysql_socket):
     """The connection string to the local mysql instance."""
     if run_services:
-        return 'mysql://root@localhost/?unix_socket={0}&charset=utf8'.format(mysql_socket)
+        return f'mysql://root@localhost/?unix_socket={mysql_socket}&charset=utf8'
 
 
 @pytest.fixture(scope='session')
@@ -127,10 +127,10 @@ def mysql_watcher(
         return watcher_getter(
             'mysqld',
             [
-                '--defaults-file={0}'.format(mysql_defaults_file),
-                '--datadir={mysql_data_dir}'.format(mysql_data_dir=mysql_data_dir),
-                '--pid-file={mysql_pid}'.format(mysql_pid=mysql_pid),
-                '--socket={mysql_socket}'.format(mysql_socket=mysql_socket),
+                f'--defaults-file={mysql_defaults_file}',
+                f'--datadir={mysql_data_dir}',
+                f'--pid-file={mysql_pid}',
+                f'--socket={mysql_socket}',
                 '--skip-networking',
             ],
             checker=lambda: os.path.exists(mysql_socket),
@@ -153,12 +153,12 @@ def mysql_database_getter(run_services, mysql_watcher, mysql_socket):
                 [
                     'mysql',
                     '--user=root',
-                    '--socket={0}'.format(mysql_socket),
-                    '--execute=create database {0};'.format(database_name),
+                    f'--socket={mysql_socket}',
+                    f'--execute=create database {database_name};',
                 ],
             )
             check_output(
-                'mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user=root --socket={0} mysql'.format(mysql_socket),
+                f'mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --user=root --socket={mysql_socket} mysql',
                 shell=True
             )
         return getter

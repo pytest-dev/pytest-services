@@ -26,7 +26,7 @@ def memcached(request, run_services, memcached_socket, watcher_getter):
 def memcached_connection(run_services, memcached_socket):
     """The connection string to the local memcached instance."""
     if run_services:
-        return 'unix:{0}'.format(memcached_socket)
+        return f'unix:{memcached_socket}'
 
 
 @pytest.fixture

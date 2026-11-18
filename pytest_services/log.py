@@ -16,9 +16,9 @@ def services_log(worker_id):
             handler = logging.handlers.SysLogHandler(
                 facility=logging.handlers.SysLogHandler.LOG_LOCAL7, address='/dev/log', **kwargs)
             break
-        except (IOError, TypeError):
+        except (OSError, TypeError):
             pass
-    logger = logging.getLogger('[{worker_id}] {name}'.format(name=__name__, worker_id=worker_id))
+    logger = logging.getLogger(f'[{worker_id}] {__name__}')
     logger.setLevel(logging.DEBUG)
     if handler and workaround_issue_20(handler):
         logger.propagate = 0
