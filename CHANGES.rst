@@ -4,6 +4,7 @@ Changelog
 UNRELEASED
 ----------
 
+- #55: Use ``pytest.fixture`` instead of the deprecated ``pytest.yield_fixture``, which warns with ``PytestRemovedIn10Warning`` on pytest 9.
 - #52: Move ``pylibmc`` and ``MySQLdb`` library imports to specific tests -- this makes it easier to test a subset of the ``pytest-services`` package  without having to install all the dependencies.
 
 2.2.2
